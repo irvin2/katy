@@ -1,36 +1,3033 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prueba Nephy 💜</title>
+<meta name="theme-color" content="#070313">
+<title>Nuestro Universo — Nephy 💜</title>
 
 <style>
-body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #070313;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;800&display=swap');
+
+:root{
+    --bg:#070313;
+    --purple:#9b5cff;
+    --light:#ddb8ff;
+    --muted:#c7b8d9;
 }
 
-h1 {
-    color: #ddb8ff;
+*{
+    box-sizing:border-box;
 }
+
+html,
+body{
+    margin:0;
+    min-height:100%;
+    background:#070313;
+    color:#fff;
+    font-family:Nunito,Arial,sans-serif;
+}
+
+body{
+    overflow-x:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 15%,
+            #64278b66,
+            transparent 35%
+        ),
+        linear-gradient(
+            #090313,
+            #150622 55%,
+            #070313
+        );
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    pointer-events:none;
+}
+
+#game{
+    position:relative;
+    z-index:1;
+}
+
+.screen{
+    display:none;
+    min-height:100vh;
+    padding:18px;
+    align-items:center;
+    justify-content:center;
+}
+
+.screen.active{
+    display:flex;
+}
+
+.box{
+    width:min(950px,100%);
+    background:#12081fdd;
+    border:1px solid #a66cff55;
+    border-radius:28px;
+    padding:clamp(22px,5vw,48px);
+    box-shadow:
+        0 30px 100px #000b,
+        0 0 60px #8e49ff18;
+    backdrop-filter:blur(12px);
+}
+
+.center{
+    text-align:center;
+}
+
+.tiny{
+    font-size:11px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--light);
+    font-weight:800;
+}
+
+h1{
+    font:
+        normal
+        clamp(35px,7vw,72px)/1.15
+        'Press Start 2P';
+    margin:20px 0;
+    text-shadow:0 0 25px #a75dff88;
+}
+
+h2{
+    font:
+        normal
+        clamp(23px,5vw,42px)/1.45
+        'Press Start 2P';
+    margin:22px 0;
+}
+
+.gradient{
+    background:
+        linear-gradient(
+            90deg,
+            #fff,
+            #e4baff,
+            #b878ff
+        );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+p{
+    font-size:16px;
+    line-height:1.85;
+    color:#ddd0e9;
+}
+
+.subtitle{
+    max-width:680px;
+    margin:auto;
+}
+
+.moon{
+    font-size:70px;
+    filter:drop-shadow(0 0 30px #bb77ff);
+    animation:float 4s ease-in-out infinite;
+}
+
+.date{
+    margin:20px;
+    color:#d7b8ff;
+    font-weight:800;
+}
+
+.btn{
+    border:1px solid #c98cff88;
+    background:
+        linear-gradient(
+            135deg,
+            #9b5cff33,
+            #ff9de722
+        );
+    color:white;
+    border-radius:999px;
+    padding:14px 24px;
+    font:800 14px Nunito;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 0 25px #9b5cff25;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 35px #9b5cff55;
+}
+
+.gamehead{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.hud{
+    font-weight:800;
+    white-space:nowrap;
+}
+
+.bar{
+    height:10px;
+    border-radius:99px;
+    background:#ffffff10;
+    overflow:hidden;
+    margin:10px 0 18px;
+}
+
+.bar i{
+    display:block;
+    height:100%;
+    width:0;
+    background:
+        linear-gradient(
+            90deg,
+            #7c3cff,
+            #f0a6ff
+        );
+    transition:.25s;
+}
+
+/* =====================================================
+   NIVEL 2
+===================================================== */
+
+.game{
+    position:relative;
+    width:100%;
+    height:min(62vh,520px);
+    min-height:380px;
+    overflow:hidden;
+    border-radius:22px;
+    border:1px solid #b875ff35;
+
+    background:
+        radial-gradient(
+            circle at 75% 20%,
+            #792fb455,
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 20% 75%,
+            #53259a55,
+            transparent 28%
+        ),
+        linear-gradient(
+            #0d0619,
+            #080411
+        );
+
+    box-shadow:
+        inset 0 0 100px #000a,
+        0 0 35px #8d48ff18;
+}
+
+.game-grid{
+    position:absolute;
+    inset:0;
+
+    background-image:
+        linear-gradient(
+            #ffffff06 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            #ffffff06 1px,
+            transparent 1px
+        );
+
+    background-size:45px 45px;
+
+    transform:translateX(var(--grid,0px));
+
+    pointer-events:none;
+}
+
+.world{
+    position:absolute;
+    left:0;
+    top:0;
+
+    width:3800px;
+    height:100%;
+
+    will-change:transform;
+}
+
+.ground{
+    position:absolute;
+    left:0;
+    bottom:0;
+
+    width:3800px;
+    height:14%;
+
+    min-height:55px;
+
+    background:
+        linear-gradient(
+            #9b5cff55,
+            #4d1e7c55
+        ),
+        #10051d;
+
+    border-top:
+        2px solid
+        #b66dff66;
+
+    box-shadow:
+        0 -5px 25px
+        #9b5cff25;
+}
+
+.player{
+    position:absolute;
+
+    left:150px;
+    bottom:14%;
+
+    width:50px;
+    height:50px;
+
+    font-size:39px;
+    line-height:50px;
+
+    text-align:center;
+
+    z-index:20;
+
+    filter:
+        drop-shadow(
+            0 0 13px
+            #d38cff
+        );
+
+    will-change:
+        transform,
+        bottom;
+}
+
+.goal{
+    position:absolute;
+
+    left:3500px;
+    bottom:14%;
+
+    font-size:48px;
+
+    z-index:15;
+
+    filter:
+        drop-shadow(
+            0 0 20px
+            #e1a1ff
+        );
+
+    animation:
+        goalFloat 1.7s
+        ease-in-out
+        infinite;
+}
+
+.goal-text{
+    position:absolute;
+
+    left:3440px;
+    bottom:28%;
+
+    z-index:15;
+
+    padding:7px 10px;
+
+    border-radius:9px;
+
+    background:#10061ddd;
+
+    border:
+        1px solid
+        #c77cff44;
+
+    color:#e4c7ff;
+
+    font-size:11px;
+
+    white-space:nowrap;
+}
+
+.finish{
+    position:absolute;
+
+    left:3460px;
+    bottom:14%;
+
+    width:3px;
+    height:72%;
+
+    background:
+        linear-gradient(
+            transparent,
+            #e3b0ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 20px
+        #c77cff;
+}
+
+/* =====================================================
+   ESTRELLAS
+===================================================== */
+
+.star{
+    position:absolute;
+
+    width:40px;
+    height:40px;
+
+    z-index:12;
+
+    font-size:30px;
+    line-height:40px;
+
+    text-align:center;
+
+    filter:
+        drop-shadow(
+            0 0 6px
+            white
+        )
+        drop-shadow(
+            0 0 16px
+            #c77cff
+        );
+
+    animation:
+        starFloat
+        1s
+        ease-in-out
+        infinite alternate;
+
+    transition:
+        opacity .25s,
+        transform .35s;
+}
+
+.star.collected{
+    opacity:0;
+
+    transform:
+        scale(2.5)
+        rotate(180deg);
+
+    pointer-events:none;
+    animation:none;
+}
+
+/* =====================================================
+   OBSTÁCULOS
+===================================================== */
+
+.obstacle{
+    position:absolute;
+    bottom:14%;
+    z-index:11;
+}
+
+.spike{
+    width:0;
+    height:0;
+
+    border-left:
+        22px solid
+        transparent;
+
+    border-right:
+        22px solid
+        transparent;
+
+    border-bottom:
+        46px solid
+        #c77cff;
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            #c77cff
+        )
+        drop-shadow(
+            0 0 14px
+            #8d42ff
+        );
+}
+
+.spike2{
+    width:60px;
+    height:46px;
+}
+
+.spike2::before,
+.spike2::after{
+    content:"";
+
+    position:absolute;
+    bottom:0;
+
+    width:0;
+    height:0;
+
+    border-left:
+        18px solid
+        transparent;
+
+    border-right:
+        18px solid
+        transparent;
+
+    border-bottom:
+        38px solid
+        #c77cff;
+}
+
+.spike2::before{
+    left:-27px;
+}
+
+.spike2::after{
+    left:8px;
+}
+
+.block{
+    width:52px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #c27aff33,
+            #6c35a855
+        ),
+        #1d0b31;
+
+    border:
+        2px solid
+        #bd78ff99;
+
+    border-radius:7px;
+
+    box-shadow:
+        inset 0 0 15px
+        #c07aff18,
+
+        0 0 12px
+        #8e49ff25;
+}
+
+.block::after{
+    content:"";
+
+    position:absolute;
+    inset:6px;
+
+    border:
+        1px solid
+        #d9aaff22;
+
+    border-radius:4px;
+}
+
+/* =====================================================
+   MENSAJE DE ESTRELLA
+===================================================== */
+
+.star-pop{
+    position:absolute;
+
+    left:50%;
+    top:22%;
+
+    transform:
+        translate(-50%,-50%)
+        scale(.7);
+
+    z-index:100;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    font:
+        11px
+        'Press Start 2P';
+
+    color:#f0d7ff;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+    text-shadow:
+        0 0 10px #9b5cff,
+        0 0 25px #9b5cff;
+}
+
+.star-pop.show{
+    animation:
+        popStar
+        1s
+        ease forwards;
+}
+
+/* =====================================================
+   PARTÍCULAS
+===================================================== */
+
+.particle{
+    position:absolute;
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#efd3ff;
+
+    z-index:150;
+
+    pointer-events:none;
+
+    animation:
+        explode
+        .7s
+        ease-out
+        forwards;
+}
+
+/* =====================================================
+   COMPLETADO
+===================================================== */
+
+.complete{
+    position:absolute;
+    inset:0;
+
+    display:none;
+
+    align-items:center;
+    justify-content:center;
+
+    z-index:200;
+
+    text-align:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #612b8b99,
+            transparent 55%
+        ),
+        #070313ee;
+
+    backdrop-filter:blur(5px);
+}
+
+.complete.show{
+    display:flex;
+
+    animation:
+        fadeIn
+        .6s
+        ease;
+}
+
+.complete-box{
+    width:min(720px,92%);
+    padding:30px;
+}
+
+.complete-box h2{
+    font-size:
+        clamp(
+            20px,
+            4vw,
+            36px
+        );
+
+    color:#ddb1ff;
+}
+
+.complete-stars{
+    font-size:26px;
+    letter-spacing:5px;
+
+    animation:
+        constellation
+        1.8s
+        ease-in-out
+        infinite alternate;
+}
+
+.complete-box p{
+    font-size:18px;
+}
+
+/* =====================================================
+   BOTÓN SALTO
+===================================================== */
+
+.jump-area{
+    display:flex;
+    justify-content:center;
+
+    margin-top:14px;
+}
+
+.jump{
+    width:min(300px,85vw);
+    height:62px;
+
+    border:
+        1px solid
+        #c88aff66;
+
+    border-radius:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #9b5cff44,
+            #ff9de722
+        );
+
+    color:#fff;
+
+    font:
+        800 15px
+        Nunito;
+
+    box-shadow:
+        0 0 25px
+        #9b5cff22;
+
+    touch-action:manipulation;
+    user-select:none;
+}
+
+.jump:active{
+    transform:scale(.94);
+    background:#9b5cff66;
+}
+
+.hint{
+    text-align:center;
+
+    font-size:12px;
+
+    color:#9886a8;
+
+    margin-top:9px;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.cards{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(180px,1fr)
+        );
+
+    gap:14px;
+}
+
+.card{
+    padding:22px;
+
+    border-radius:20px;
+
+    background:#ffffff07;
+
+    border:
+        1px solid
+        #ffffff12;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.card:hover{
+    border-color:#bd7cff55;
+    transform:translateY(-3px);
+}
+
+.emoji{
+    font-size:31px;
+}
+
+.card h3{
+    margin:8px 0;
+}
+
+.card p{
+    font-size:13px;
+    color:var(--muted);
+}
+
+.memory{
+    text-align:center;
+
+    margin-top:18px;
+    padding:22px;
+
+    border-radius:18px;
+
+    background:#080410;
+
+    border:
+        1px solid
+        #c77cff22;
+}
+
+.memory p{
+    margin:0;
+    font-size:17px;
+}
+
+.bigheart{
+    font-size:78px;
+
+    animation:
+        pulse
+        1.5s
+        infinite;
+}
+
+.signature{
+    color:#e0b9ff;
+    font-weight:800;
+    font-size:19px;
+}
+
+.footer{
+    font-size:11px;
+    color:#806a96;
+    margin-top:25px;
+}
+
+/* =====================================================
+   ANIMACIONES
+===================================================== */
+
+@keyframes float{
+
+    50%{
+        transform:
+            translateY(-10px);
+    }
+
+}
+
+@keyframes goalFloat{
+
+    50%{
+        transform:
+            translateY(-10px);
+    }
+
+}
+
+@keyframes starFloat{
+
+    to{
+        transform:
+            translateY(-9px)
+            rotate(8deg);
+    }
+
+}
+
+@keyframes popStar{
+
+    0%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-50%)
+            scale(.6);
+    }
+
+    20%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.15);
+    }
+
+    75%{
+        opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1);
+    }
+
+    100%{
+        opacity:0;
+
+        transform:
+            translate(-50%,-75%)
+            scale(.9);
+    }
+
+}
+
+@keyframes explode{
+
+    to{
+        transform:
+            translate(
+                calc(
+                    (var(--x) - .5)
+                    * 170px
+                ),
+                calc(
+                    (var(--y) - .5)
+                    * 170px
+                )
+            )
+            scale(0);
+
+        opacity:0;
+    }
+
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+
+}
+
+@keyframes constellation{
+
+    from{
+        transform:scale(1);
+
+        filter:
+            drop-shadow(
+                0 0 7px
+                #9b5cff
+            );
+    }
+
+    to{
+        transform:scale(1.08);
+
+        filter:
+            drop-shadow(
+                0 0 25px
+                #d48cff
+            );
+    }
+
+}
+
+@keyframes pulse{
+
+    50%{
+        transform:scale(1.12);
+    }
+
+}
+
+/* =====================================================
+   CELULAR
+===================================================== */
+
+@media(max-width:600px){
+
+    .screen{
+        padding:10px;
+    }
+
+    .box{
+        border-radius:20px;
+        padding:20px;
+    }
+
+    .game{
+        height:62vh;
+        min-height:410px;
+    }
+
+    .gamehead{
+        align-items:flex-start;
+    }
+
+    .player{
+        left:110px;
+    }
+
+    .star{
+        font-size:27px;
+    }
+
+    .star-pop{
+        font-size:8px;
+    }
+
+    .complete-stars{
+        font-size:19px;
+        letter-spacing:2px;
+    }
+
+    .hint{
+        line-height:1.6;
+    }
+
+}
+
 </style>
 </head>
-
 <body>
 
-<div>
-    <h1>💜 NUESTRO UNIVERSO 💜</h1>
-    <p>Si puedes ver esto, GitHub Pages funciona correctamente.</p>
+<canvas id="space"></canvas>
+
+<div id="game">
+
+<!-- =====================================================
+     INICIO
+===================================================== -->
+
+<section id="start" class="screen active">
+
+<div class="box center">
+
+<div class="moon">🌙</div>
+
+<div class="tiny">
+Una pequeña aventura para alguien especial
 </div>
+
+<h1>
+<span class="gradient">
+NUESTRO<br>
+UNIVERSO
+</span>
+</h1>
+
+<p class="subtitle">
+Una historia que comenzó en un videojuego...
+y terminó convirtiéndose en uno de mis lugares favoritos:
+<b>nosotros.</b>
+</p>
+
+<div class="date">
+25 · 08 · 2025 → 25 · 08 · 2026
+</div>
+
+<button class="btn" onclick="go('s1')">
+▶ COMENZAR
+</button>
+
+<div class="footer">
+Hecho para mi Nephy 💜 · Feliz primer aniversario
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 1
+===================================================== -->
+
+<section id="s1" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Nivel 01 · El comienzo
+</div>
+
+<h2>
+Todo comenzó jugando... 🎮
+</h2>
+
+<p>
+Entre partidas, conversaciones y casualidades apareció
+una persona que no sabía que iba a convertirse en alguien
+tan importante para mí.
+</p>
+
+<p>
+<b>Jasmín.</b>
+Aunque yo prefiero decirte <b>Nephy</b>. 💜
+</p>
+
+<button class="btn" onclick="go('s2')">
+Seguir la historia ✦
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 2
+===================================================== -->
+
+<section id="s2" class="screen">
+
+<div class="box">
+
+<div class="gamehead">
+
+<div class="tiny">
+Nivel 02 · Nuestro primer año
+</div>
+
+<div class="hud">
+⭐ <span id="score">0</span>/12
+</div>
+
+</div>
+
+<div class="bar">
+<i id="scorebar"></i>
+</div>
+
+<p style="text-align:center;color:var(--muted)">
+12 estrellas por nuestro primer año.
+<br>
+25 de agosto de 2025 → 25 de agosto de 2026 💜
+</p>
+
+
+<div class="game" id="gameArea">
+
+<div class="game-grid" id="gameGrid"></div>
+
+
+<div class="world" id="world">
+
+<div class="ground"></div>
+
+<div class="finish"></div>
+
+
+<div class="player" id="player">
+🧍‍♀️
+</div>
+
+
+<div class="goal">
+🧍‍♂️
+</div>
+
+
+<div class="goal-text">
+✨ aquí estoy
+</div>
+
+</div>
+
+
+<div
+class="star-pop"
+id="starPop"
+>
+⭐ ESTRELLA CONSEGUIDA ⭐
+</div>
+
+
+<div
+class="complete"
+id="complete"
+>
+
+<div class="complete-box">
+
+<div class="complete-stars">
+⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+</div>
+
+<div class="complete-stars">
+⭐ ⭐ ⭐ ⭐ ⭐ ⭐
+</div>
+
+<h2>
+Pronto estaremos juntos 💜
+</h2>
+
+<p>
+12 estrellas.
+12 meses.
+Un año entero desde que nuestras historias
+se encontraron.
+</p>
+
+<p style="color:#e4b9ff;font-size:22px">
+<b>
+Y todavía nos queda muchísimo universo por recorrer.
+</b>
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="jump-area">
+
+<button
+class="jump"
+id="jumpButton"
+type="button"
+>
+⬆ SALTAR
+</button>
+
+</div>
+
+<div class="hint">
+PC:
+<b>ESPACIO · W · ↑</b>
+&nbsp; · &nbsp;
+Celular:
+<b>SALTAR</b>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 3
+===================================================== -->
+
+<section id="s3" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Nivel 03 · Lo que encontré en ti
+</div>
+
+<h2>
+Entre tantas estrellas,
+te encontré a ti. 🌌
+</h2>
+
+<p>
+Hay muchas cosas que me gustan de ti,
+pero hay dos que siempre vuelven a mi cabeza.
+</p>
+
+<div class="cards">
+
+
+<div
+class="card"
+onclick="memory(
+'🌷 Tu forma de ser',
+'Me encanta esa forma tuya de ser tú. Tu manera de hablar, de reaccionar y de hacerme sentir acompañado. No cambiaría esa esencia que te hace ser Nephy.'
+)"
+>
+
+<div class="emoji">
+🌷
+</div>
+
+<h3>
+Tu forma de ser
+</h3>
+
+<p>
+Toca para descubrirlo
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="memory(
+'🎙️ Tu voz',
+'Podría escucharte durante muchísimo tiempo. Tu voz tiene algo que me encanta y que hace que la distancia se sienta un poquito más pequeña.'
+)"
+>
+
+<div class="emoji">
+🎙️
+</div>
+
+<h3>
+Tu voz
+</h3>
+
+<p>
+Toca para descubrirlo
+</p>
+
+</div>
+
+
+<div
+class="card"
+onclick="memory(
+'💜 Tú',
+'Y después de todo, la razón más sencilla es la mejor: me gustas por ser tú. Mi Jasmín. Mi Nephy.'
+)"
+>
+
+<div class="emoji">
+💜
+</div>
+
+<h3>
+Simplemente tú
+</h3>
+
+<p>
+Toca para descubrirlo
+</p>
+
+</div>
+
+</div>
+
+
+<div
+id="memory"
+class="memory"
+>
+
+<p>
+Elige una estrella para abrir un recuerdo.
+</p>
+
+</div>
+
+<br>
+
+<button
+class="btn"
+onclick="go('s4')"
+>
+Continuar ✦
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 4
+===================================================== -->
+
+<section id="s4" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Nivel 04 · La distancia
+</div>
+
+<h2>
+Hay algo que no hemos podido vencer... 🌙
+</h2>
+
+<p>
+Los kilómetros.
+</p>
+
+<p>
+Pero este año me enseñó que la distancia puede hacer
+que extrañemos a alguien...
+<b>
+pero no puede decidir cuánto queremos a esa persona.
+</b>
+</p>
+
+<div style="font-size:45px;margin:28px">
+🌎 ✦ ✦ ✦ ✦ ✦ 🌙
+</div>
+
+<p>
+Y aunque todavía nos falte ese abrazo que tantas veces
+hemos querido, hay una misión que sigue activa:
+</p>
+
+<h2 style="font-size:21px">
+🔒 ESTAR JUNTOS
+</h2>
+
+<p style="color:#d9b3ff">
+Estado:
+<b>EN PROGRESO...</b>
+</p>
+
+<button
+class="btn"
+onclick="go('s5')"
+>
+No abandonar la misión ❤️
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 5
+===================================================== -->
+
+<section id="s5" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Nivel 05 · 365 días
+</div>
+
+<h2>
+¡Misión completada! ⭐
+</h2>
+
+<div style="font-size:62px;margin:15px">
+365
+</div>
+
+<p>
+<b>días</b>
+·
+8,760 horas
+·
+525,600 minutos
+</p>
+
+<p>
+365 días de recuerdos para llevarnos
+al resto de la historia.
+</p>
+
+<button
+class="btn"
+onclick="go('s6')"
+>
+Ver la última misión ✦
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 6
+===================================================== -->
+
+<section id="s6" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Nivel Final · Nuestro futuro
+</div>
+
+<h2>
+Hay cosas que todavía no hemos desbloqueado... 🔮
+</h2>
+
+<div class="cards">
+
+
+<div class="card">
+
+<div class="emoji">
+🤗
+</div>
+
+<h3>
+Primer abrazo
+</h3>
+
+<p>
+Bloqueado por la distancia.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">
+📸
+</div>
+
+<h3>
+Primera foto juntos
+</h3>
+
+<p>
+Esperando ser desbloqueada.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">
+🌌
+</div>
+
+<h3>
+Ver las estrellas
+</h3>
+
+<p>
+Algún día, sin una pantalla entre nosotros.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="emoji">
+❤️
+</div>
+
+<h3>
+Muchos aniversarios
+</h3>
+
+<p>
+Este apenas es el primero.
+</p>
+
+</div>
+
+
+</div>
+
+<br>
+
+<button
+class="btn"
+onclick="go('s7')"
+>
+Desbloquear el final 💜
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NIVEL 7
+===================================================== -->
+
+<section id="s7" class="screen">
+
+<div class="box center">
+
+<div class="bigheart">
+💜
+</div>
+
+<div class="tiny">
+Misión completada
+</div>
+
+<h2>
+Feliz primer aniversario, Nephy
+</h2>
+
+<p>
+Hace un año te encontré en un videojuego.
+</p>
+
+<p>
+Hoy puedo decir que encontrarte fue una de las
+casualidades más bonitas que me ha regalado la vida.
+</p>
+
+<p>
+Gracias por tu forma de ser.<br>
+Gracias por tu voz.<br>
+Gracias por cada conversación,
+cada risa y cada día.
+</p>
+
+<p>
+<b>
+Y si pudiera volver a ese primer día...
+</b>
+</p>
+
+<p style="font-size:23px;color:#e4b9ff">
+te volvería a elegir. ❤️
+</p>
+
+<div class="signature">
+25 · 08 · 2026<br>
+Para mi Nephy, con todo mi cariño. 💜
+</div>
+
+<br>
+
+<button
+class="btn"
+onclick="go('s8')"
+>
+Hay un último secreto... 🌙
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     SECRETO
+===================================================== -->
+
+<section id="s8" class="screen">
+
+<div class="box center">
+
+<div class="tiny">
+Secreto desbloqueado
+</div>
+
+<h2>
+Para cuando me extrañes 🌙
+</h2>
+
+<p>
+Si algún día estás triste o me extrañas,
+vuelve aquí.
+</p>
+
+<p>
+Imagínate que todas estas estrellas son
+un pedacito de mí diciéndote:
+</p>
+
+<h2
+style="
+font-size:24px;
+color:#ddb1ff;
+"
+>
+“Estoy aquí, Nephy.”
+</h2>
+
+<p>
+Y cuando llegue el día en que podamos estar juntos,
+quiero que volvamos a mirar este juego y podamos decir:
+</p>
+
+<p style="font-size:21px">
+<b>
+“Lo logramos.”
+</b>
+🥹💜
+</p>
+
+<p
+style="
+margin-top:30px;
+color:#a88dbd;
+font-size:13px;
+"
+>
+Y mientras tanto, seguimos teniendo nuestras llamadas,
+nuestras noches en Discord y todas esas pequeñas cosas
+que hacen que la distancia se sienta un poquito más pequeña. 💜
+</p>
+
+<br>
+
+<button
+class="btn"
+onclick="location.reload()"
+>
+↻ Jugar otra vez
+</button>
+
+</div>
+
+</section>
+
+</div>
+<script>
+
+/* =====================================================
+   NAVEGACIÓN
+===================================================== */
+
+const screens = [
+    "start",
+    "s1",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8"
+];
+
+function go(id){
+
+    screens.forEach(function(screen){
+
+        const element =
+            document.getElementById(screen);
+
+        if(element){
+            element.classList.remove("active");
+        }
+
+    });
+
+    const target =
+        document.getElementById(id);
+
+    if(target){
+        target.classList.add("active");
+    }
+
+    window.scrollTo(0,0);
+
+    if(id === "s2"){
+        setTimeout(function(){
+            startLevel();
+        },100);
+    }
+
+}
+
+
+/* =====================================================
+   RECUERDOS
+===================================================== */
+
+function memory(title,text){
+
+    const box =
+        document.getElementById("memory");
+
+    box.innerHTML =
+        "<p><b>"
+        + title
+        + "</b><br>"
+        + text
+        + "</p>";
+}
+
+
+/* =====================================================
+   FONDO ESPACIAL
+===================================================== */
+
+const canvas =
+    document.getElementById("space");
+
+const ctx =
+    canvas.getContext("2d");
+
+let starsBackground = [];
+
+function resizeCanvas(){
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+    canvas.width =
+        window.innerWidth * dpr;
+
+    canvas.height =
+        window.innerHeight * dpr;
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+    starsBackground = [];
+
+    const amount =
+        Math.min(
+            180,
+            Math.floor(
+                window.innerWidth / 6
+            )
+        );
+
+    for(let i=0;i<amount;i++){
+
+        starsBackground.push({
+
+            x:
+                Math.random()
+                * window.innerWidth,
+
+            y:
+                Math.random()
+                * window.innerHeight,
+
+            r:
+                Math.random()
+                * 1.4 + .2,
+
+            alpha:
+                Math.random()
+                * .7 + .2
+
+        });
+
+    }
+
+}
+
+function drawBackground(){
+
+    ctx.clearRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    for(const star of starsBackground){
+
+        ctx.globalAlpha =
+            star.alpha;
+
+        ctx.fillStyle =
+            "#ffffff";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            star.x,
+            star.y,
+            star.r,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+    }
+
+    ctx.globalAlpha=1;
+
+    requestAnimationFrame(
+        drawBackground
+    );
+}
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+drawBackground();
+
+
+/* =====================================================
+   NIVEL 2
+===================================================== */
+
+const gameArea =
+    document.getElementById("gameArea");
+
+const world =
+    document.getElementById("world");
+
+const player =
+    document.getElementById("player");
+
+const scoreElement =
+    document.getElementById("score");
+
+const scoreBar =
+    document.getElementById("scorebar");
+
+const starPop =
+    document.getElementById("starPop");
+
+const complete =
+    document.getElementById("complete");
+
+const jumpButton =
+    document.getElementById("jumpButton");
+
+const gameGrid =
+    document.getElementById("gameGrid");
+
+
+/*
+    El recorrido completo.
+
+    Es bastante más largo que la pantalla.
+*/
+
+const LEVEL_LENGTH = 3500;
+
+
+/*
+    Posiciones de las 12 estrellas.
+
+    NO representan enero-diciembre.
+
+    Representan los 12 meses que fueron
+    pasando desde el 25/08/2025.
+*/
+
+const starData = [
+
+    {
+        x:300,
+        y:125,
+        text:"25 AGO 2025"
+    },
+
+    {
+        x:530,
+        y:190,
+        text:"1 MES"
+    },
+
+    {
+        x:760,
+        y:120,
+        text:"2 MESES"
+    },
+
+    {
+        x:990,
+        y:210,
+        text:"3 MESES"
+    },
+
+    {
+        x:1230,
+        y:140,
+        text:"4 MESES"
+    },
+
+    {
+        x:1460,
+        y:205,
+        text:"5 MESES"
+    },
+
+    {
+        x:1700,
+        y:125,
+        text:"6 MESES"
+    },
+
+    {
+        x:1940,
+        y:210,
+        text:"7 MESES"
+    },
+
+    {
+        x:2180,
+        y:145,
+        text:"8 MESES"
+    },
+
+    {
+        x:2420,
+        y:205,
+        text:"9 MESES"
+    },
+
+    {
+        x:2700,
+        y:130,
+        text:"10 MESES"
+    },
+
+    {
+        x:3050,
+        y:210,
+        text:"25 AGO 2026"
+    }
+
+];
+
+
+/* =====================================================
+   CREAR ESTRELLAS
+===================================================== */
+
+function createStars(){
+
+    for(const data of starData){
+
+        const star =
+            document.createElement("div");
+
+        star.className="star";
+
+        star.textContent="⭐";
+
+        star.style.left =
+            data.x + "px";
+
+        star.style.bottom =
+            "calc(14% + "
+            + data.y
+            + "px)";
+
+        star.dataset.x =
+            data.x;
+
+        star.dataset.y =
+            data.y;
+
+        star.dataset.text =
+            data.text;
+
+        star.dataset.collected =
+            "false";
+
+        world.appendChild(star);
+
+    }
+
+}
+
+
+/* =====================================================
+   OBSTÁCULOS
+===================================================== */
+
+const obstacleData = [
+
+    {
+        x:420,
+        type:"spike"
+    },
+
+    {
+        x:620,
+        type:"spike"
+    },
+
+    {
+        x:830,
+        type:"block",
+        height:65
+    },
+
+    {
+        x:1080,
+        type:"spike2"
+    },
+
+    {
+        x:1180,
+        type:"spike"
+    },
+
+    {
+        x:1360,
+        type:"block",
+        height:75
+    },
+
+    {
+        x:1510,
+        type:"spike"
+    },
+
+    {
+        x:1580,
+        type:"spike"
+    },
+
+    {
+        x:1800,
+        type:"spike2"
+    },
+
+    {
+        x:1990,
+        type:"block",
+        height:70
+    },
+
+    {
+        x:2130,
+        type:"spike"
+    },
+
+    {
+        x:2200,
+        type:"spike"
+    },
+
+    {
+        x:2350,
+        type:"spike2"
+    },
+
+    {
+        x:2540,
+        type:"block",
+        height:80
+    },
+
+    {
+        x:2670,
+        type:"spike"
+    },
+
+    {
+        x:2740,
+        type:"spike"
+    },
+
+    {
+        x:2910,
+        type:"spike2"
+    },
+
+    {
+        x:3160,
+        type:"block",
+        height:75
+    },
+
+    {
+        x:3290,
+        type:"spike"
+    },
+
+    {
+        x:3360,
+        type:"spike"
+    }
+
+];
+
+
+function createObstacles(){
+
+    for(const data of obstacleData){
+
+        const obstacle =
+            document.createElement("div");
+
+        obstacle.className =
+            "obstacle "
+            + data.type;
+
+        obstacle.style.left =
+            data.x + "px";
+
+        obstacle.dataset.x =
+            data.x;
+
+        obstacle.dataset.type =
+            data.type;
+
+        if(data.height){
+
+            obstacle.style.height =
+                data.height + "px";
+
+        }
+
+        world.appendChild(
+            obstacle
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   ESTADO DEL JUEGO
+===================================================== */
+
+let running = false;
+
+let animationFrame = 0;
+
+let lastTime = 0;
+
+let playerX = 150;
+
+let playerY = 0;
+
+let velocityY = 0;
+
+let cameraX = 0;
+
+let score = 0;
+
+let jumping = false;
+
+let hitLock = false;
+
+
+/*
+    Física tipo Geometry Dash.
+*/
+
+const gravity = 2050;
+
+const jumpForce = 760;
+
+const speed = 255;
+
+
+/* =====================================================
+   CREAR NIVEL
+===================================================== */
+
+createStars();
+createObstacles();
+
+
+/* =====================================================
+   INICIAR NIVEL
+===================================================== */
+
+function startLevel(){
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+    running=true;
+
+    playerX=150;
+
+    playerY=0;
+
+    velocityY=0;
+
+    cameraX=0;
+
+    score=0;
+
+    jumping=false;
+
+    hitLock=false;
+
+    scoreElement.textContent="0";
+
+    scoreBar.style.width="0%";
+
+    complete.classList.remove(
+        "show"
+    );
+
+    document
+        .querySelectorAll(".star")
+        .forEach(function(star){
+
+            star.dataset.collected =
+                "false";
+
+            star.classList.remove(
+                "collected"
+            );
+
+        });
+
+    player.style.transform =
+        "rotate(0deg)";
+
+    updatePlayer();
+
+    world.style.transform =
+        "translateX(0px)";
+
+    gameGrid.style.setProperty(
+        "--grid",
+        "0px"
+    );
+
+    lastTime =
+        performance.now();
+
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+
+/* =====================================================
+   SALTO
+===================================================== */
+
+function jump(){
+
+    if(!running){
+        return;
+    }
+
+    if(jumping){
+        return;
+    }
+
+    velocityY =
+        jumpForce;
+
+    jumping=true;
+
+    player.style.transform =
+        "rotate(-15deg)";
+
+}
+
+
+/* =====================================================
+   CONTROLES PC
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        const level2 =
+            document
+                .getElementById("s2")
+                .classList
+                .contains("active");
+
+        if(!level2){
+            return;
+        }
+
+        if(
+            event.code === "Space" ||
+            event.code === "ArrowUp" ||
+            event.code === "KeyW"
+        ){
+
+            event.preventDefault();
+
+            jump();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   CONTROL CELULAR
+===================================================== */
+
+jumpButton.addEventListener(
+    "pointerdown",
+    function(event){
+
+        event.preventDefault();
+
+        jump();
+
+    }
+);
+
+
+/* =====================================================
+   GAME LOOP
+===================================================== */
+
+function gameLoop(time){
+
+    if(!running){
+        return;
+    }
+
+    let delta =
+        (time-lastTime)/1000;
+
+    if(delta>0.035){
+        delta=0.035;
+    }
+
+    lastTime=time;
+
+
+    /* -----------------------------
+       GRAVEDAD
+    ----------------------------- */
+
+    velocityY -=
+        gravity * delta;
+
+    playerY +=
+        velocityY * delta;
+
+
+    /*
+       Piso.
+    */
+
+    if(playerY<=0){
+
+        playerY=0;
+
+        velocityY=0;
+
+        jumping=false;
+
+        player.style.transform =
+            "rotate(0deg)";
+
+    }
+
+
+    /* -----------------------------
+       AVANCE
+    ----------------------------- */
+
+    playerX +=
+        speed * delta;
+
+
+    /* -----------------------------
+       CÁMARA
+    ----------------------------- */
+
+    const viewport =
+        gameArea.clientWidth;
+
+    let targetCamera =
+        playerX - viewport * .28;
+
+    const maxCamera =
+        LEVEL_LENGTH -
+        viewport;
+
+    if(targetCamera<0){
+        targetCamera=0;
+    }
+
+    if(targetCamera>maxCamera){
+        targetCamera=maxCamera;
+    }
+
+    cameraX +=
+        (targetCamera-cameraX)
+        * .14;
+
+
+    world.style.transform =
+        "translateX("
+        + (-cameraX)
+        + "px)";
+
+
+    gameGrid.style.setProperty(
+        "--grid",
+        (-cameraX*.35)+"px"
+    );
+
+
+    updatePlayer();
+
+    checkStars();
+
+    checkObstacles();
+
+
+    /* -----------------------------
+       LLEGADA
+    ----------------------------- */
+
+    if(playerX>=LEVEL_LENGTH){
+
+        if(score===12){
+
+            finishLevel();
+
+            return;
+
+        }else{
+
+            /*
+                Si llega al final sin las
+                12 estrellas, vuelve un poco.
+            */
+
+            playerX =
+                LEVEL_LENGTH - 220;
+
+            showPop(
+                "⭐ FALTAN "
+                + (12-score)
+                + " ESTRELLAS ⭐"
+            );
+
+        }
+
+    }
+
+
+    animationFrame =
+        requestAnimationFrame(
+            gameLoop
+        );
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR PERSONAJE
+===================================================== */
+
+function updatePlayer(){
+
+    player.style.bottom =
+        "calc(14% + "
+        + playerY
+        + "px)";
+
+}
+
+
+/* =====================================================
+   ESTRELLAS
+===================================================== */
+
+function checkStars(){
+
+    const stars =
+        document.querySelectorAll(
+            ".star"
+        );
+
+    stars.forEach(function(star){
+
+        if(
+            star.dataset.collected
+            === "true"
+        ){
+            return;
+        }
+
+        const starX =
+            Number(
+                star.dataset.x
+            );
+
+        const starY =
+            Number(
+                star.dataset.y
+            );
+
+
+        const distanceX =
+            Math.abs(
+                playerX-starX
+            );
+
+        const distanceY =
+            Math.abs(
+                playerY-starY
+            );
+
+
+        /*
+            Área de recolección.
+        */
+
+        if(
+            distanceX<48 &&
+            distanceY<55
+        ){
+
+            collectStar(star);
+
+        }
+
+    });
+
+}
+
+
+/* =====================================================
+   RECOGER ESTRELLA
+===================================================== */
+
+function collectStar(star){
+
+    if(
+        star.dataset.collected
+        === "true"
+    ){
+        return;
+    }
+
+    star.dataset.collected =
+        "true";
+
+    score++;
+
+
+    /* Contador */
+
+    scoreElement.textContent =
+        score;
+
+
+    /* Barra */
+
+    scoreBar.style.width =
+        ((score/12)*100)
+        + "%";
+
+
+    /* Animación */
+
+    star.classList.add(
+        "collected"
+    );
+
+
+    /* Texto */
+
+    showPop(
+        "⭐ "
+        + star.dataset.text
+        + " ⭐"
+    );
+
+
+    /* Partículas */
+
+    createParticles(
+        star
+    );
+
+}
+
+
+/* =====================================================
+   MENSAJE
+===================================================== */
+
+function showPop(text){
+
+    starPop.textContent =
+        text;
+
+    starPop.classList.remove(
+        "show"
+    );
+
+    /*
+       Fuerza a reiniciar la animación.
+    */
+
+    void starPop.offsetWidth;
+
+    starPop.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   PARTÍCULAS
+===================================================== */
+
+function createParticles(star){
+
+    const x =
+        Number(
+            star.dataset.x
+        );
+
+    const y =
+        Number(
+            star.dataset.y
+        );
+
+    const gameRect =
+        gameArea.getBoundingClientRect();
+
+
+    for(let i=0;i<22;i++){
+
+        const particle =
+            document.createElement(
+                "div"
+            );
+
+        particle.className =
+            "particle";
+
+        /*
+            Posición relativa al área
+            visible del juego.
+        */
+
+        particle.style.left =
+            (
+                x -
+                cameraX +
+                15
+            ) + "px";
+
+        particle.style.bottom =
+            (
+                14 +
+                y +
+                10
+            ) + "px";
+
+
+        particle.style.setProperty(
+            "--x",
+            Math.random()
+        );
+
+        particle.style.setProperty(
+            "--y",
+            Math.random()
+        );
+
+
+        gameArea.appendChild(
+            particle
+        );
+
+
+        setTimeout(
+            function(){
+                particle.remove();
+            },
+            750
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   OBSTÁCULOS
+===================================================== */
+
+function checkObstacles(){
+
+    if(hitLock){
+        return;
+    }
+
+
+    const obstacles =
+        document.querySelectorAll(
+            ".obstacle"
+        );
+
+
+    for(const obstacle of obstacles){
+
+        const x =
+            Number(
+                obstacle.dataset.x
+            );
+
+        const type =
+            obstacle.dataset.type;
+
+
+        let width=44;
+
+        let height=46;
+
+
+        if(type==="block"){
+
+            width=52;
+
+            height =
+                obstacle.offsetHeight;
+
+        }
+
+
+        if(type==="spike2"){
+
+            width=60;
+
+            height=46;
+
+        }
+
+
+        /*
+            Caja horizontal.
+        */
+
+        const horizontal =
+            playerX + 38 > x &&
+            playerX < x + width;
+
+
+        /*
+            Si el personaje está
+            suficientemente arriba,
+            pasa el obstáculo.
+        */
+
+        const vertical =
+            playerY < height - 7;
+
+
+        if(
+            horizontal &&
+            vertical
+        ){
+
+            hitObstacle();
+
+            break;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   GOLPE
+===================================================== */
+
+function hitObstacle(){
+
+    if(hitLock){
+        return;
+    }
+
+    hitLock=true;
+
+    running=false;
+
+
+    player.style.transform =
+        "rotate(35deg) scale(.85)";
+
+
+    gameArea.style.boxShadow =
+        "inset 0 0 130px #ff4f8b55";
+
+
+    /*
+       Retrocede.
+
+       Las estrellas que ya consiguió
+       NO se pierden.
+    */
+
+    setTimeout(
+        function(){
+
+            playerX =
+                Math.max(
+                    150,
+                    playerX-260
+                );
+
+            playerY=0;
+
+            velocityY=0;
+
+            jumping=false;
+
+            player.style.transform =
+                "rotate(0deg)";
+
+            gameArea.style.boxShadow =
+                "";
+
+            hitLock=false;
+
+            running=true;
+
+            lastTime =
+                performance.now();
+
+            animationFrame =
+                requestAnimationFrame(
+                    gameLoop
+                );
+
+        },
+        650
+    );
+
+}
+
+
+/* =====================================================
+   FINAL DEL NIVEL
+===================================================== */
+
+function finishLevel(){
+
+    running=false;
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    /*
+       Mostrar al personaje
+       junto al otro.
+    */
+
+    cameraX =
+        LEVEL_LENGTH -
+        gameArea.clientWidth +
+        40;
+
+
+    if(cameraX<0){
+        cameraX=0;
+    }
+
+
+    world.style.transform =
+        "translateX("
+        + (-cameraX)
+        + "px)";
+
+
+    gameGrid.style.setProperty(
+        "--grid",
+        (-cameraX*.35)+"px"
+    );
+
+
+    /*
+       Pequeña pausa dramática.
+    */
+
+    setTimeout(
+        function(){
+
+            complete.classList.add(
+                "show"
+            );
+
+
+            /*
+               Después de mostrar
+               el mensaje, continúa.
+            */
+
+            setTimeout(
+                function(){
+
+                    complete.classList.remove(
+                        "show"
+                    );
+
+                    go("s3");
+
+                },
+                5000
+            );
+
+        },
+        700
+    );
+
+}
+
+
+/* =====================================================
+   PREVENIR SCROLL CON ESPACIO
+===================================================== */
+
+window.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.code==="Space" &&
+            document
+                .getElementById("s2")
+                .classList
+                .contains("active")
+        ){
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
 </html>
