@@ -1,77 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="utf-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1,
-      maximum-scale=1, user-scalable=no">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Nuestro Universo — Nephy 💜</title>
 
+
+<!-- =========================================
+     FUENTES
+========================================= -->
+
 <style>
 
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;800&display=swap');
+@import url(
+    'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;700;800&display=swap'
+);
 
+
+/* =========================================
+   VARIABLES
+========================================= */
 
 :root{
+
     --bg:#070313;
-    --v:#9b5cff;
-    --l:#ddb8ff;
-    --m:#c7b8d9;
+
+    --purple:#9b5cff;
+
+    --light:#ddb8ff;
+
+    --muted:#c7b8d9;
+
 }
 
 
+/* =========================================
+   RESET
+========================================= */
+
 *{
+
     box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+
 }
 
 
 html,
 body{
+
     margin:0;
+
+    padding:0;
+
     min-height:100%;
-    background:#070313;
-    color:#fff;
-    font-family:Nunito,Arial,sans-serif;
+
 }
 
 
 body{
-    overflow-x:hidden;
 
     background:
+
         radial-gradient(
             circle at 50% 15%,
             #64278b66,
             transparent 35%
         ),
+
         linear-gradient(
             #090313,
             #150622 55%,
             #070313
         );
+
+    color:white;
+
+    font-family:
+        Nunito,
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+
 }
 
 
-canvas{
+/* =========================================
+   FONDO DE ESTRELLAS
+========================================= */
+
+#space{
+
     position:fixed;
+
     inset:0;
+
     width:100%;
+
     height:100%;
+
     z-index:0;
+
     pointer-events:none;
+
 }
 
+
+/* =========================================
+   CONTENEDOR
+========================================= */
 
 #game{
+
     position:relative;
+
     z-index:1;
+
 }
 
 
+/* =========================================
+   PANTALLAS
+========================================= */
+
 .screen{
+
     display:none;
 
     min-height:100vh;
@@ -79,74 +139,110 @@ canvas{
     padding:18px;
 
     align-items:center;
+
     justify-content:center;
+
 }
 
 
 .screen.active{
+
     display:flex;
+
 }
 
 
+/* =========================================
+   CAJA PRINCIPAL
+========================================= */
+
 .box{
+
     width:min(950px,100%);
 
     background:#12081fdd;
 
-    border:1px solid #a66cff55;
+    border:
+        1px solid #a66cff55;
 
     border-radius:28px;
 
-    padding:clamp(
-        22px,
-        5vw,
-        48px
-    );
+    padding:
+        clamp(
+            22px,
+            5vw,
+            48px
+        );
 
     box-shadow:
+
         0 30px 100px #000b,
+
         0 0 60px #8e49ff18;
 
-    backdrop-filter:blur(12px);
+    backdrop-filter:
+        blur(12px);
+
 }
 
 
+/* =========================================
+   TEXTOS
+========================================= */
+
 .center{
+
     text-align:center;
+
 }
 
 
 .tiny{
+
     font-size:11px;
+
     letter-spacing:3px;
+
     text-transform:uppercase;
-    color:var(--l);
+
+    color:var(--light);
+
     font-weight:800;
+
 }
 
 
 h1{
+
     font:
-        normal clamp(35px,7vw,72px)/1.15
+        normal
+        clamp(35px,7vw,72px)
+        /1.15
         'Press Start 2P';
 
     margin:20px 0;
 
     text-shadow:
         0 0 25px #a75dff88;
+
 }
 
 
 h2{
+
     font:
-        normal clamp(23px,5vw,42px)/1.45
+        normal
+        clamp(23px,5vw,42px)
+        /1.45
         'Press Start 2P';
 
     margin:22px 0;
+
 }
 
 
 .gradient{
+
     background:
         linear-gradient(
             90deg,
@@ -157,24 +253,35 @@ h2{
 
     -webkit-background-clip:text;
 
+    background-clip:text;
+
     color:transparent;
+
 }
 
 
 p{
+
     font-size:16px;
+
     line-height:1.85;
+
     color:#ddd0e9;
+
 }
 
 
 .subtitle{
+
     max-width:680px;
+
     margin:auto;
+
 }
 
 
-.moon{
+.moon-big{
+
     font-size:70px;
 
     filter:
@@ -184,19 +291,27 @@ p{
 
     animation:
         float 4s ease-in-out infinite;
+
 }
 
 
 .date{
+
     margin:20px;
 
     color:#d7b8ff;
 
     font-weight:800;
+
 }
 
 
+/* =========================================
+   BOTONES
+========================================= */
+
 .btn{
+
     border:
         1px solid #c98cff88;
 
@@ -218,34 +333,31 @@ p{
 
     cursor:pointer;
 
-    transition:
-        transform .25s,
-        box-shadow .25s;
+    transition:.25s;
 
     box-shadow:
         0 0 25px #9b5cff25;
+
 }
 
 
 .btn:hover{
-    transform:translateY(-2px);
+
+    transform:
+        translateY(-2px);
 
     box-shadow:
         0 0 35px #9b5cff55;
+
 }
 
 
-.btn:active{
-    transform:scale(.96);
-}
-
-
-/* =========================
-   NIVEL 2
-========================= */
-
+/* =========================================
+   HEADER DEL JUEGO
+========================================= */
 
 .gamehead{
+
     display:flex;
 
     justify-content:space-between;
@@ -254,20 +366,24 @@ p{
 
     gap:10px;
 
-    margin-bottom:4px;
 }
 
 
 .hud{
+
     font-weight:800;
 
-    color:#eadcff;
+    color:#fff;
 
-    white-space:nowrap;
 }
 
 
+/* =========================================
+   BARRA
+========================================= */
+
 .bar{
+
     height:10px;
 
     border-radius:99px;
@@ -276,11 +392,14 @@ p{
 
     overflow:hidden;
 
-    margin:10px 0 18px;
+    margin:
+        10px 0 18px;
+
 }
 
 
 .bar i{
+
     display:block;
 
     height:100%;
@@ -296,22 +415,23 @@ p{
 
     transition:
         width .35s ease;
+
 }
 
 
-/* MAPA */
+/* =========================================
+   MAPA
+========================================= */
 
 .map{
+
     position:relative;
 
     width:100%;
 
-    height:min(
-        58vh,
-        520px
-    );
+    height:min(58vh,520px);
 
-    min-height:360px;
+    min-height:400px;
 
     border-radius:22px;
 
@@ -336,14 +456,13 @@ p{
 
         #080412;
 
-    box-shadow:
-        inset 0 0 50px #0008;
 }
 
 
-/* CUADRÍCULA ESPACIAL */
+/* cuadrícula espacial */
 
-.map:before{
+.map::before{
+
     content:"";
 
     position:absolute;
@@ -363,89 +482,104 @@ p{
             transparent 1px
         );
 
-    background-size:45px 45px;
+    background-size:
+        45px 45px;
 
     pointer-events:none;
+
 }
 
 
-/* ESTRELLAS DECORATIVAS DEL MAPA */
-
-.map:after{
-    content:"✦   ·   ✧      ·       ✦    ·    ✧";
-
-    position:absolute;
-
-    inset:20px;
-
-    color:#ffffff22;
-
-    font-size:22px;
-
-    letter-spacing:28px;
-
-    line-height:70px;
-
-    pointer-events:none;
-}
-
-
-/* PERSONAJE */
-
-.player,
-.goal,
-.collect{
-    position:absolute;
-
-    z-index:5;
-}
-
+/* =========================================
+   PERSONAJE ☄️
+========================================= */
 
 .player{
-    font-size:38px;
+
+    position:absolute;
+
+    z-index:20;
+
+    width:44px;
+
+    height:44px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:34px;
+
+    line-height:1;
 
     filter:
         drop-shadow(
-            0 0 12px #d38cff
+            0 0 13px #d38cff
         );
 
-    transform:
-        translate(-50%,-50%);
-
     transition:
-        left .16s ease-out,
-        top .16s ease-out;
 
-    user-select:none;
+        left .12s ease-out,
+
+        top .12s ease-out;
 
     pointer-events:none;
+
 }
 
 
-.goal{
-    right:7%;
-    top:7%;
+/* =========================================
+   META ☀️
+========================================= */
 
-    font-size:35px;
+.goal{
+
+    position:absolute;
+
+    z-index:20;
+
+    right:6%;
+
+    top:6%;
+
+    width:50px;
+
+    height:50px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:40px;
+
+    line-height:1;
 
     filter:
         drop-shadow(
-            0 0 15px #e1a4ff
+            0 0 20px #ffd45c
         );
 
     animation:
-        goalFloat 2s ease-in-out infinite;
+        sunFloat 2.5s ease-in-out infinite;
 
-    transform:
-        translate(50%,-50%);
+    pointer-events:none;
+
 }
 
 
 .label{
+
     position:absolute;
 
-    right:4%;
-    top:16%;
+    z-index:21;
+
+    right:3.5%;
+
+    top:18%;
 
     background:#10061ddd;
 
@@ -453,256 +587,117 @@ p{
 
     border-radius:8px;
 
-    font-size:11px;
+    font-size:10px;
 
     color:#d9c4eb;
 
-    z-index:6;
 }
 
 
-/* LUNAS */
+/* =========================================
+   LUNAS
+========================================= */
 
 .collect{
-    width:42px;
-    height:42px;
+
+    position:absolute;
+
+    z-index:10;
+
+    width:36px;
+
+    height:36px;
 
     display:flex;
 
     align-items:center;
+
     justify-content:center;
 
-    font-size:27px;
+    font-size:28px;
 
     cursor:pointer;
 
     transform:
         translate(-50%,-50%);
 
-    transition:
-        transform .2s,
-        opacity .2s;
-
     filter:
         drop-shadow(
-            0 0 10px #c88aff
+            0 0 12px #b879ff
         );
 
+    animation:
+        moonFloat 1.8s ease-in-out infinite;
+
     user-select:none;
+
 }
 
-
-.collect:hover{
-    transform:
-        translate(-50%,-50%)
-        scale(1.25);
-}
-
-
-.collect:active{
-    transform:
-        translate(-50%,-50%)
-        scale(.85);
-}
-
-
-/* ANIMACIÓN AL RECOGER */
 
 .collect.collected{
+
     animation:
-        moonCollect .5s ease forwards;
+        moonCollected .5s ease forwards;
+
 }
 
 
-@keyframes moonCollect{
+@keyframes moonFloat{
+
+    0%,100%{
+
+        transform:
+            translate(-50%,-50%)
+            translateY(0);
+
+    }
+
+    50%{
+
+        transform:
+            translate(-50%,-50%)
+            translateY(-6px);
+
+    }
+
+}
+
+
+@keyframes moonCollected{
 
     0%{
+
+        opacity:1;
+
         transform:
             translate(-50%,-50%)
             scale(1);
 
-        opacity:1;
     }
 
-    45%{
-        transform:
-            translate(-50%,-50%)
-            scale(1.8)
-            rotate(20deg);
+    50%{
 
         opacity:1;
+
+        transform:
+            translate(-50%,-50%)
+            scale(1.8);
 
         filter:
             drop-shadow(
-                0 0 25px #fff
+                0 0 25px white
             );
+
     }
 
     100%{
+
+        opacity:0;
+
         transform:
             translate(-50%,-50%)
             scale(0);
 
-        opacity:0;
-    }
-
-}
-
-
-/* =========================================
-   CONTROLES TIPO CRUCETA
-========================================= */
-
-.controls{
-    width:190px;
-    height:190px;
-
-    margin:18px auto 0;
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,60px);
-
-    grid-template-rows:
-        repeat(3,60px);
-
-    gap:5px;
-
-    justify-content:center;
-    align-items:center;
-
-    user-select:none;
-    touch-action:none;
-}
-
-
-.controls button{
-    width:60px;
-    height:60px;
-
-    border:
-        1px solid #b978ff66;
-
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff12,
-            #9b5cff18
-        );
-
-    color:#fff;
-
-    border-radius:17px;
-
-    font-size:22px;
-    font-weight:800;
-
-    cursor:pointer;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    box-shadow:
-        0 5px 18px #0007,
-        inset 0 0 15px #b45cff08;
-
-    transition:
-        transform .08s ease,
-        background .15s ease,
-        box-shadow .15s ease;
-
-    touch-action:manipulation;
-
-    -webkit-user-select:none;
-    user-select:none;
-}
-
-
-.controls button:hover{
-    background:
-        linear-gradient(
-            145deg,
-            #ffffff1c,
-            #a95cff28
-        );
-
-    box-shadow:
-        0 5px 22px #9b5cff25;
-}
-
-
-.controls button:active{
-    transform:scale(.86);
-
-    background:#a75cff40;
-
-    box-shadow:
-        0 0 25px #a75cff55;
-}
-
-
-/*
-   Posiciones exactas del D-pad
-*/
-
-.control-up{
-    grid-column:2;
-    grid-row:1;
-}
-
-.control-left{
-    grid-column:1;
-    grid-row:2;
-}
-
-.control-down{
-    grid-column:2;
-    grid-row:2;
-}
-
-.control-right{
-    grid-column:3;
-    grid-row:2;
-}
-
-
-/*
-   El botón central queda visualmente
-   vacío para que parezca una cruceta.
-*/
-
-.control-center{
-    grid-column:2;
-    grid-row:3;
-
-    visibility:hidden;
-}
-
-
-@media(max-width:600px){
-
-    .controls{
-        width:180px;
-        height:180px;
-
-        grid-template-columns:
-            repeat(3,56px);
-
-        grid-template-rows:
-            repeat(3,56px);
-
-        gap:4px;
-    }
-
-    .controls button{
-        width:56px;
-        height:56px;
-
-        border-radius:15px;
-
-        font-size:20px;
     }
 
 }
@@ -716,17 +711,19 @@ p{
 
     position:absolute;
 
-    z-index:4;
+    z-index:8;
 
-    width:38px;
-    height:38px;
+    width:40px;
+
+    height:40px;
 
     display:flex;
 
     align-items:center;
+
     justify-content:center;
 
-    font-size:27px;
+    font-size:28px;
 
     transform:
         translate(-50%,-50%);
@@ -742,28 +739,6 @@ p{
     pointer-events:none;
 
     user-select:none;
-}
-
-
-.hazard::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:42px;
-    height:42px;
-
-    border-radius:50%;
-
-    border:
-        1px solid #ff71d533;
-
-    box-shadow:
-        0 0 15px #ff4fc622;
-
-    animation:
-        hazardPulse 1.5s ease-in-out infinite;
 
 }
 
@@ -771,33 +746,249 @@ p{
 @keyframes hazardFloat{
 
     0%,100%{
+
         transform:
             translate(-50%,-50%)
             rotate(-5deg);
+
     }
 
     50%{
+
         transform:
-            translate(-50%,-58%)
+            translate(-50%,-55%)
             rotate(5deg);
-    }
 
-}
-
-
-@keyframes hazardPulse{
-
-    50%{
-        transform:scale(1.3);
-
-        opacity:.3;
     }
 
 }
 
 
 /* =========================================
-   EFECTO DE DERROTA
+   CONTROLES
+========================================= */
+
+.controls{
+
+    width:190px;
+
+    height:190px;
+
+    margin:18px auto 0;
+
+    display:grid;
+
+    grid-template-columns:
+        60px 60px 60px;
+
+    grid-template-rows:
+        60px 60px 60px;
+
+    gap:5px;
+
+    justify-content:center;
+
+    align-items:center;
+
+    touch-action:none;
+
+    user-select:none;
+
+}
+
+
+.controls button{
+
+    width:60px;
+
+    height:60px;
+
+    margin:0;
+
+    padding:0;
+
+    border:
+        1px solid #b978ff66;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff12,
+            #9b5cff18
+        );
+
+    color:#fff;
+
+    border-radius:17px;
+
+    font-size:21px;
+
+    font-weight:800;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    box-shadow:
+
+        0 5px 18px #0007,
+
+        inset 0 0 15px #b45cff08;
+
+    transition:
+
+        transform .08s ease,
+
+        background .12s ease;
+
+    touch-action:manipulation;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+}
+
+
+/* arriba */
+
+.controls button:nth-child(1){
+
+    grid-column:2;
+
+    grid-row:1;
+
+}
+
+
+/* izquierda */
+
+.controls button:nth-child(2){
+
+    grid-column:1;
+
+    grid-row:2;
+
+}
+
+
+/* abajo */
+
+.controls button:nth-child(3){
+
+    grid-column:2;
+
+    grid-row:3;
+
+}
+
+
+/* derecha */
+
+.controls button:nth-child(4){
+
+    grid-column:3;
+
+    grid-row:2;
+
+}
+
+
+.controls button:hover{
+
+    background:
+        #a95cff30;
+
+}
+
+
+.controls button:active{
+
+    transform:scale(.86);
+
+    background:#a75cff45;
+
+    box-shadow:
+        0 0 25px #a75cff55;
+
+}
+
+
+/* =========================================
+   MENSAJE DE DERROTA
+========================================= */
+
+.loseMessage{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    padding:20px;
+
+    background:
+        radial-gradient(
+            circle,
+            #48144ccc,
+            #080412f5 70%
+        );
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease;
+
+}
+
+
+.loseMessage.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+
+.loseInner{
+
+    padding:25px;
+
+}
+
+
+.loseIcon{
+
+    font-size:58px;
+
+    filter:
+        drop-shadow(
+            0 0 20px #ff6bdb
+        );
+
+}
+
+
+/* =========================================
+   FLASH
 ========================================= */
 
 .damageFlash{
@@ -806,13 +997,12 @@ p{
 
     inset:0;
 
-    z-index:30;
+    z-index:95;
 
     background:
         radial-gradient(
             circle,
-            #ff5cbd33,
-            #ff003322,
+            #ff5cbd44,
             transparent 70%
         );
 
@@ -826,7 +1016,7 @@ p{
 .damageFlash.show{
 
     animation:
-        damageFlash .65s ease;
+        damageFlash .6s ease;
 
 }
 
@@ -849,114 +1039,126 @@ p{
 
 
 /* =========================================
-   MENSAJE DE DERROTA
+   FINAL DEL NIVEL
 ========================================= */
 
-.loseMessage{
+.levelMessage{
 
     position:absolute;
 
     inset:0;
 
-    z-index:25;
+    z-index:110;
 
     display:flex;
 
     align-items:center;
+
     justify-content:center;
 
     text-align:center;
 
-    padding:25px;
+    padding:20px;
 
     background:
         radial-gradient(
             circle,
-            #4b145d99,
-            #080313ee 72%
+            #35134dcc,
+            #080412f5 72%
         );
 
     opacity:0;
 
+    visibility:hidden;
+
     pointer-events:none;
 
     transition:
-        opacity .25s ease;
+        opacity .3s ease,
+        visibility .3s ease;
 
 }
 
 
-.loseMessage.show{
+.levelMessage.show{
 
     opacity:1;
+
+    visibility:visible;
 
     pointer-events:auto;
 
 }
 
 
-.loseInner{
+.levelMessageInner{
 
-    transform:
-        scale(.8)
-        translateY(15px);
+    width:min(600px,90%);
 
-    transition:
-        transform .3s ease;
+    padding:28px;
+
+    border:
+        1px solid #b875ff44;
+
+    border-radius:22px;
+
+    background:#10061ddd;
+
+    box-shadow:
+
+        0 20px 60px #000b,
+
+        0 0 40px #9b5cff22;
+
+    backdrop-filter:
+        blur(10px);
 
 }
 
 
-.loseMessage.show
-.loseInner{
+.levelMessage .symbol{
 
-    transform:
-        scale(1)
-        translateY(0);
+    font-size:45px;
 
-}
-
-
-.loseIcon{
-
-    font-size:60px;
+    margin-bottom:10px;
 
     filter:
         drop-shadow(
-            0 0 25px #ff76d8
+            0 0 15px #b86cff
         );
 
 }
 
 
-.loseMessage h2{
+.levelMessage h2{
 
     font-size:
         clamp(
-            18px,
-            4vw,
-            27px
+            20px,
+            5vw,
+            32px
         );
 
-    margin:14px 0;
+    margin:10px 0 15px;
 
 }
 
 
-.loseMessage p{
+.levelMessage p{
 
-    font-size:14px;
+    font-size:15px;
 
-    color:#ddcce8;
+    line-height:1.7;
 
 }
-      
-/* =========================
-   RESTO DE PANTALLAS
-========================= */
 
+
+/* =========================================
+   TARJETAS
+========================================= */
 
 .cards{
+
     display:grid;
 
     grid-template-columns:
@@ -966,10 +1168,12 @@ p{
         );
 
     gap:14px;
+
 }
 
 
 .card{
+
     padding:22px;
 
     border-radius:20px;
@@ -981,38 +1185,51 @@ p{
 
     cursor:pointer;
 
-    transition:
-        transform .25s,
-        border-color .25s;
+    transition:.2s;
+
 }
 
 
 .card:hover{
-    border-color:#bd7cff55;
+
+    border-color:
+        #bd7cff55;
 
     transform:
         translateY(-3px);
+
 }
 
 
 .emoji{
+
     font-size:31px;
+
 }
 
 
 .card h3{
+
     margin:8px 0;
+
 }
 
 
 .card p{
+
     font-size:13px;
 
-    color:var(--m);
+    color:var(--muted);
+
 }
 
 
+/* =========================================
+   MEMORIA
+========================================= */
+
 .memory{
+
     text-align:center;
 
     margin-top:18px;
@@ -1025,60 +1242,66 @@ p{
 
     border:
         1px solid #c77cff22;
+
 }
 
 
 .memory p{
+
     margin:0;
 
     font-size:17px;
+
 }
 
 
+/* =========================================
+   FINAL
+========================================= */
+
 .bigheart{
+
     font-size:78px;
 
     animation:
         pulse 1.5s infinite;
+
 }
 
 
 .signature{
+
     color:#e0b9ff;
 
     font-weight:800;
 
     font-size:19px;
+
 }
 
 
 .footer{
+
     font-size:11px;
 
     color:#806a96;
 
     margin-top:25px;
+
 }
 
 
-/* ANIMACIONES */
+/* =========================================
+   ANIMACIONES
+========================================= */
 
 @keyframes float{
 
     50%{
+
         transform:
             translateY(-10px);
-    }
 
-}
-
-
-@keyframes goalFloat{
-
-    50%{
-        transform:
-            translate(50%,-50%)
-            translateY(-8px);
     }
 
 }
@@ -1087,799 +1310,1101 @@ p{
 @keyframes pulse{
 
     50%{
+
         transform:
             scale(1.12);
+
     }
 
 }
 
 
-/* CELULAR */
+@keyframes sunFloat{
+
+    0%,100%{
+
+        transform:
+            translateY(0)
+            scale(1);
+
+    }
+
+    50%{
+
+        transform:
+            translateY(-5px)
+            scale(1.08);
+
+    }
+
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
 
 @media(max-width:600px){
 
     .screen{
+
         padding:10px;
+
     }
 
+
     .box{
+
         border-radius:20px;
 
         padding:20px;
+
     }
 
+
     .map{
+
         min-height:400px;
 
         height:55vh;
+
     }
+
 
     .controls{
+
+        width:174px;
+
+        height:174px;
+
         grid-template-columns:
-            repeat(3,56px);
+            55px 55px 55px;
+
+        grid-template-rows:
+            55px 55px 55px;
+
+        gap:4px;
+
     }
+
 
     .controls button{
-        height:54px;
+
+        width:55px;
+
+        height:55px;
+
+        border-radius:15px;
+
+        font-size:19px;
+
     }
 
-    .player{
-        font-size:34px;
-    }
 
-    .goal{
-        font-size:32px;
-    }
+    p{
 
-    .collect{
-        width:38px;
-        height:38px;
-        font-size:25px;
-    }
+        font-size:15px;
 
-}
-
-
-/* PANTALLAS MUY PEQUEÑAS */
-
-@media(max-height:650px){
-
-    .map{
-        height:350px;
-        min-height:350px;
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
+
 <canvas id="space"></canvas>
 
+
 <div id="game">
-<!-- =========================
+<!-- =========================================
      INICIO
-========================= -->
+========================================= -->
 
-<section id="start" class="screen active">
+<section
+    id="start"
+    class="screen active"
+>
 
-    <div class="box center">
+<div class="box center">
 
-        <div class="moon">🌙</div>
+    <div class="moon-big">
+        🌙
+    </div>
 
-        <div class="tiny">
-            Una pequeña aventura para alguien especial
-        </div>
+    <div class="tiny">
+        Una pequeña aventura
+        para alguien especial
+    </div>
 
-        <h1>
-            <span class="gradient">
-                NUESTRO<br>
-                UNIVERSO
-            </span>
-        </h1>
+    <h1>
 
-        <p class="subtitle">
-            Una historia que comenzó en un videojuego...
-            y terminó convirtiéndose en uno de mis lugares favoritos:
-            <b>nosotros.</b>
-        </p>
+        <span class="gradient">
 
-        <div class="date">
-            25 · 08 · 2025
-            →
-            25 · 08 · 2026
-        </div>
+            NUESTRO<br>
+            UNIVERSO
 
-        <button class="btn" onclick="go('s1')">
-            ▶ COMENZAR
-        </button>
+        </span>
 
-        <div class="footer">
-            Hecho para mi Nephy 💜 · Feliz primer aniversario
-        </div>
+    </h1>
+
+    <p class="subtitle">
+
+        Una historia que comenzó
+        en un videojuego...
+        y terminó convirtiéndose
+        en uno de mis lugares favoritos:
+        <b>nosotros.</b>
+
+    </p>
+
+    <div class="date">
+
+        25 · 08 · 2025
+        →
+        25 · 08 · 2026
 
     </div>
+
+    <button
+        class="btn"
+        onclick="go('s1')"
+    >
+
+        ▶ COMENZAR
+
+    </button>
+
+    <div class="footer">
+
+        Hecho para mi Nephy 💜
+        · Feliz primer aniversario
+
+    </div>
+
+</div>
 
 </section>
 
 
-<!-- =========================
+
+<!-- =========================================
      NIVEL 1
-========================= -->
+========================================= -->
 
-<section id="s1" class="screen">
+<section
+    id="s1"
+    class="screen"
+>
 
-    <div class="box center">
+<div class="box center">
+
+    <div class="tiny">
+        Nivel 01 · El comienzo
+    </div>
+
+    <h2>
+        Todo comenzó jugando... 🎮
+    </h2>
+
+    <p>
+
+        Entre partidas,
+        conversaciones y casualidades
+        apareció una persona que no sabía
+        que iba a convertirse en alguien
+        tan importante para mí.
+
+    </p>
+
+    <p>
+
+        <b>Jasmín.</b>
+
+        Aunque yo prefiero decirte
+
+        <b>Nephy.</b>
+
+        💜
+
+    </p>
+
+    <button
+        class="btn"
+        onclick="go('s2')"
+    >
+
+        Seguir la historia ✦
+
+    </button>
+
+</div>
+
+</section>
+
+
+
+<!-- =========================================
+     NIVEL 2
+========================================= -->
+
+<section
+    id="s2"
+    class="screen"
+>
+
+<div class="box">
+
+
+    <!-- HEADER -->
+
+    <div class="gamehead">
 
         <div class="tiny">
-            Nivel 01 · El comienzo
+
+            Nivel 02 · Nuestro camino
+
         </div>
 
-        <h2>
-            Todo comenzó jugando... 🎮
-        </h2>
+        <div class="hud">
 
-        <p>
-            Entre partidas, conversaciones y casualidades
-            apareció una persona que no sabía que iba a
-            convertirse en alguien tan importante para mí.
-        </p>
+            🌙
 
-        <p>
-            <b>Jasmín.</b>
-            Aunque yo prefiero decirte
-            <b>Nephy</b>. 💜
-        </p>
+            <span id="score">
+                0
+            </span>
 
-        <button class="btn" onclick="go('s2')">
-            Seguir la historia ✦
+            /12
+
+        </div>
+
+    </div>
+
+
+    <!-- BARRA -->
+
+    <div class="bar">
+
+        <i id="scorebar"></i>
+
+    </div>
+
+
+    <p
+        style="
+            text-align:center;
+            color:var(--muted);
+        "
+    >
+
+        Recorre nuestro pequeño universo,
+        recoge las 12 lunas
+        y llega hasta mí. 💜
+
+    </p>
+
+
+    <!-- MAPA -->
+
+    <div
+        class="map"
+        id="map"
+    >
+
+
+        <!-- TÚ -->
+
+        <div
+            class="player"
+            id="player"
+            style="
+                left:8%;
+                top:75%;
+            "
+        >
+
+            ☄️
+
+        </div>
+
+
+        <!-- META -->
+
+        <div
+            class="goal"
+            id="goal"
+        >
+
+            ☀️
+
+        </div>
+
+
+        <div class="label">
+
+            ☀️ aquí estoy
+
+        </div>
+
+
+        <!-- FLASH -->
+
+        <div
+            id="damageFlash"
+            class="damageFlash"
+        >
+        </div>
+
+
+        <!-- DERROTA -->
+
+        <div
+            id="loseMessage"
+            class="loseMessage"
+        >
+
+            <div class="loseInner">
+
+                <div class="loseIcon">
+                    💫
+                </div>
+
+                <h2>
+                    ¡Cuidado! 💜
+                </h2>
+
+                <p>
+
+                    Tocaste un pequeño
+                    obstáculo espacial.
+
+                </p>
+
+                <p>
+
+                    Volvamos a intentarlo...
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINAL DEL NIVEL -->
+
+        <div
+            id="levelMessage"
+            class="levelMessage"
+        >
+
+            <div
+                class="levelMessageInner"
+            >
+
+                <div class="symbol">
+
+                    ☄️ 💜 ☀️
+
+                </div>
+
+                <h2>
+
+                    Pronto estaremos juntos
+
+                </h2>
+
+                <p>
+
+                    Después de todas estas lunas,
+                    todavía queda mucho universo
+                    por descubrir juntos.
+
+                </p>
+
+                <button
+                    class="btn"
+                    onclick="go('s3')"
+                >
+
+                    Continuar ✦
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- CONTROLES -->
+
+    <div class="controls">
+
+        <button
+            onclick="move(0,-1)"
+            aria-label="Arriba"
+        >
+            ▲
+        </button>
+
+        <button
+            onclick="move(-1,0)"
+            aria-label="Izquierda"
+        >
+            ◀
+        </button>
+
+        <button
+            onclick="move(0,1)"
+            aria-label="Abajo"
+        >
+            ▼
+        </button>
+
+        <button
+            onclick="move(1,0)"
+            aria-label="Derecha"
+        >
+            ▶
         </button>
 
     </div>
 
+
+</div>
+
 </section>
 
 
-<!-- =========================
-     NIVEL 2
-========================= -->
 
-<section id="s2" class="screen">
+<!-- =========================================
+     NIVEL 3
+========================================= -->
 
-    <div class="box">
+<section
+    id="s3"
+    class="screen"
+>
 
-        <div class="gamehead">
+<div class="box center">
 
-            <div class="tiny">
-                Nivel 02 · Nuestro camino
-            </div>
+    <div class="tiny">
 
-            <div class="hud">
-                🌙
-                <span id="score">0</span>/12
-            </div>
-
-        </div>
-
-
-        <div class="bar">
-            <i id="scorebar"></i>
-        </div>
-
-
-        <p style="text-align:center;color:var(--m)">
-
-            Recorre nuestro pequeño universo,
-            recoge las 12 lunas de nuestro primer año
-            y llega hasta mí. 💜
-
-        </p>
-
-
-        <!-- MAPA -->
-
-        <div class="map" id="map">
-
-            <!-- PERSONAJE -->
-
-            <div
-                class="player"
-                id="player"
-                style="left:8%;top:75%;"
-            >
-                🧍‍♀️
-            </div>
-
-
-            <!-- PERSONAJE FINAL -->
-
-            <div class="goal">
-                🧍‍♂️
-            </div>
-
-
-            <div class="label">
-                ✨ aquí estoy
-            </div>
-
-
-            <!-- MENSAJE CUANDO TERMINA -->
-
-            <div
-                id="levelMessage"
-                class="levelMessage"
-            >
-
-                <div class="levelMessageInner">
-
-                    <div class="symbol">
-                        🌙💜
-                    </div>
-
-                    <h2>
-                        Pronto estaremos juntos
-                    </h2>
-
-                    <p>
-                        Después de todas estas lunas,
-                        todavía queda mucho universo
-                        por descubrir juntos.
-                    </p>
-
-                    <button
-                        class="btn"
-                        onclick="go('s3')"
-                    >
-                        Continuar ✦
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- CONTROLES -->
-
-        <div class="controls">
-
-            <button
-                class="up"
-                onclick="move(0,-1)"
-                aria-label="Arriba"
-            >
-                ▲
-            </button>
-
-            <button
-                onclick="move(-1,0)"
-                aria-label="Izquierda"
-            >
-                ◀
-            </button>
-
-            <button
-                onclick="move(0,1)"
-                aria-label="Abajo"
-            >
-                ▼
-            </button>
-
-            <button
-                onclick="move(1,0)"
-                aria-label="Derecha"
-            >
-                ▶
-            </button>
-
-        </div>
+        Nivel 03 ·
+        Lo que encontré en ti
 
     </div>
 
-</section>
+    <h2>
+
+        Entre tantas estrellas,
+        te encontré a ti. 🌌
+
+    </h2>
+
+    <p>
+
+        Hay muchas cosas que me gustan
+        de ti, pero hay algunas que
+        siempre vuelven a mi cabeza.
+
+    </p>
 
 
-<!-- =========================
-     NIVEL 3
-========================= -->
-
-<section id="s3" class="screen">
-
-    <div class="box center">
-
-        <div class="tiny">
-            Nivel 03 · Lo que encontré en ti
-        </div>
-
-        <h2>
-            Entre tantas lunas,
-            te encontré a ti. 🌌
-        </h2>
-
-        <p>
-            Hay muchas cosas que me gustan de ti,
-            pero hay dos que siempre vuelven a mi cabeza.
-        </p>
-
-
-        <div class="cards">
-
-
-            <div
-                class="card"
-                onclick="memory(
-                    '🌷 Tu forma de ser',
-                    'Me encanta esa forma tuya de ser tú. Tu manera de hablar, de reaccionar y de hacerme sentir acompañado. No cambiaría esa esencia que te hace ser Nephy.'
-                )"
-            >
-
-                <div class="emoji">
-                    🌷
-                </div>
-
-                <h3>
-                    Tu forma de ser
-                </h3>
-
-                <p>
-                    Toca para descubrirlo
-                </p>
-
-            </div>
-
-
-            <div
-                class="card"
-                onclick="memory(
-                    '🎙️ Tu voz',
-                    'Podría escucharte durante muchísimo tiempo. Tu voz tiene algo que me encanta y que hace que la distancia se sienta un poquito más pequeña.'
-                )"
-            >
-
-                <div class="emoji">
-                    🎙️
-                </div>
-
-                <h3>
-                    Tu voz
-                </h3>
-
-                <p>
-                    Toca para descubrirlo
-                </p>
-
-            </div>
-
-
-            <div
-                class="card"
-                onclick="memory(
-                    '💜 Tú',
-                    'Y después de todo, la razón más sencilla es la mejor: me gustas por ser tú. Mi Jasmín. Mi Nephy.'
-                )"
-            >
-
-                <div class="emoji">
-                    💜
-                </div>
-
-                <h3>
-                    Simplemente tú
-                </h3>
-
-                <p>
-                    Toca para descubrirlo
-                </p>
-
-            </div>
-
-
-        </div>
+    <div class="cards">
 
 
         <div
-            id="memory"
-            class="memory"
+            class="card"
+            onclick="
+                memory(
+                    '🌷 Tu forma de ser',
+                    'Me encanta esa forma tuya de ser tú. Tu manera de hablar, de reaccionar y de hacerme sentir acompañado. No cambiaría esa esencia que te hace ser Nephy.'
+                )
+            "
         >
 
+            <div class="emoji">
+                🌷
+            </div>
+
+            <h3>
+                Tu forma de ser
+            </h3>
+
             <p>
-                Elige una estrella para abrir un recuerdo.
+                Toca para descubrirlo
             </p>
 
         </div>
 
 
-        <br>
 
-
-        <button
-            class="btn"
-            onclick="go('s4')"
+        <div
+            class="card"
+            onclick="
+                memory(
+                    '🎙️ Tu voz',
+                    'Podría escucharte durante muchísimo tiempo. Tu voz tiene algo que me encanta y que hace que la distancia se sienta un poquito más pequeña.'
+                )
+            "
         >
-            Continuar ✦
-        </button>
+
+            <div class="emoji">
+                🎙️
+            </div>
+
+            <h3>
+                Tu voz
+            </h3>
+
+            <p>
+                Toca para descubrirlo
+            </p>
+
+        </div>
+
+
+
+        <div
+            class="card"
+            onclick="
+                memory(
+                    '💜 Tú',
+                    'Y después de todo, la razón más sencilla es la mejor: me gustas por ser tú. Mi Jasmín. Mi Nephy.'
+                )
+            "
+        >
+
+            <div class="emoji">
+                💜
+            </div>
+
+            <h3>
+                Simplemente tú
+            </h3>
+
+            <p>
+                Toca para descubrirlo
+            </p>
+
+        </div>
+
 
     </div>
+
+
+    <div
+        id="memory"
+        class="memory"
+    >
+
+        <p>
+
+            Elige una estrella
+            para abrir un recuerdo.
+
+        </p>
+
+    </div>
+
+
+    <br>
+
+
+    <button
+        class="btn"
+        onclick="go('s4')"
+    >
+
+        Continuar ✦
+
+    </button>
+
+
+</div>
 
 </section>
 
 
-<!-- =========================
+
+<!-- =========================================
      NIVEL 4
-========================= -->
+========================================= -->
 
-<section id="s4" class="screen">
+<section
+    id="s4"
+    class="screen"
+>
 
-    <div class="box center">
+<div class="box center">
 
-        <div class="tiny">
-            Nivel 04 · La distancia
-        </div>
+    <div class="tiny">
 
-        <h2>
-            Hay algo que no hemos podido vencer... 🌙
-        </h2>
-
-        <p>
-            Los kilómetros.
-        </p>
-
-        <p>
-            Pero este año me enseñó que la distancia
-            puede hacer que extrañemos a alguien...
-            <b>
-                pero no puede decidir cuánto queremos
-                a esa persona.
-            </b>
-        </p>
-
-        <div
-            style="
-                font-size:45px;
-                margin:28px;
-            "
-        >
-            🌎 ✦ ✦ ✦ ✦ ✦ 🌙
-        </div>
-
-        <p>
-            Y aunque todavía nos falte ese abrazo
-            que tantas veces hemos querido,
-            hay una misión que sigue activa:
-        </p>
-
-        <h2 style="font-size:21px">
-            🔒 ESTAR JUNTOS
-        </h2>
-
-        <p style="color:#d9b3ff">
-            Estado:
-            <b>
-                EN PROGRESO...
-            </b>
-        </p>
-
-        <button
-            class="btn"
-            onclick="go('s5')"
-        >
-            No abandonar la misión ❤️
-        </button>
+        Nivel 04 · La distancia
 
     </div>
+
+    <h2>
+
+        Hay algo que no hemos
+        podido vencer... 🌙
+
+    </h2>
+
+    <p>
+        Los kilómetros.
+    </p>
+
+    <p>
+
+        Pero este año me enseñó
+        que la distancia puede hacer
+        que extrañemos a alguien...
+
+        <b>
+            pero no puede decidir
+            cuánto queremos a esa persona.
+        </b>
+
+    </p>
+
+    <div
+        style="
+            font-size:45px;
+            margin:28px;
+        "
+    >
+
+        🌎 ✦ ✦ ✦ ✦ ✦ 🌙
+
+    </div>
+
+    <p>
+
+        Y aunque todavía nos falte
+        ese abrazo que tantas veces
+        hemos querido, hay una misión
+        que sigue activa:
+
+    </p>
+
+    <h2
+        style="font-size:21px"
+    >
+
+        🔒 ESTAR JUNTOS
+
+    </h2>
+
+    <p
+        style="color:#d9b3ff"
+    >
+
+        Estado:
+
+        <b>
+            EN PROGRESO...
+        </b>
+
+    </p>
+
+    <button
+        class="btn"
+        onclick="go('s5')"
+    >
+
+        No abandonar la misión ❤️
+
+    </button>
+
+</div>
 
 </section>
 
 
-<!-- =========================
+
+<!-- =========================================
      NIVEL 5
-========================= -->
+========================================= -->
 
-<section id="s5" class="screen">
+<section
+    id="s5"
+    class="screen"
+>
 
-    <div class="box center">
+<div class="box center">
 
-        <div class="tiny">
-            Nivel 05 · 365 días
-        </div>
+    <div class="tiny">
 
-        <h2>
-            ¡Misión completada! ⭐
-        </h2>
-
-        <div
-            style="
-                font-size:62px;
-                margin:15px;
-            "
-        >
-            365
-        </div>
-
-        <p>
-            <b>días</b>
-            ·
-            8,760 horas
-            ·
-            525,600 minutos
-        </p>
-
-        <p>
-            365 días de recuerdos
-            para llevarnos al resto de la historia.
-        </p>
-
-        <button
-            class="btn"
-            onclick="go('s6')"
-        >
-            Ver la última misión ✦
-        </button>
+        Nivel 05 · 365 días
 
     </div>
+
+    <h2>
+
+        ¡Misión completada! ⭐
+
+    </h2>
+
+    <div
+        style="
+            font-size:62px;
+            margin:15px;
+        "
+    >
+
+        365
+
+    </div>
+
+    <p>
+
+        <b>días</b>
+        ·
+        8,760 horas
+        ·
+        525,600 minutos
+
+    </p>
+
+    <p>
+
+        365 días de recuerdos
+        para llevarnos al resto
+        de la historia.
+
+    </p>
+
+    <button
+        class="btn"
+        onclick="go('s6')"
+    >
+
+        Ver la última misión ✦
+
+    </button>
+
+</div>
 
 </section>
 
 
-<!-- =========================
+
+<!-- =========================================
      NIVEL 6
-========================= -->
+========================================= -->
 
-<section id="s6" class="screen">
+<section
+    id="s6"
+    class="screen"
+>
 
-    <div class="box center">
+<div class="box center">
 
-        <div class="tiny">
-            Nivel Final · Nuestro futuro
-        </div>
+    <div class="tiny">
 
-        <h2>
-            Hay cosas que todavía
-            no hemos desbloqueado... 🔮
-        </h2>
-
-
-        <div class="cards">
-
-
-            <div class="card">
-
-                <div class="emoji">
-                    🤗
-                </div>
-
-                <h3>
-                    Primer abrazo
-                </h3>
-
-                <p>
-                    Bloqueado por la distancia.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="emoji">
-                    📸
-                </div>
-
-                <h3>
-                    Primera foto juntos
-                </h3>
-
-                <p>
-                    Esperando ser desbloqueada.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="emoji">
-                    🌌
-                </div>
-
-                <h3>
-                    Ver las estrellas
-                </h3>
-
-                <p>
-                    Algún día,
-                    sin una pantalla entre nosotros.
-                </p>
-
-            </div>
-
-
-            <div class="card">
-
-                <div class="emoji">
-                    ❤️
-                </div>
-
-                <h3>
-                    Muchos aniversarios
-                </h3>
-
-                <p>
-                    Este apenas es el primero.
-                </p>
-
-            </div>
-
-
-        </div>
-
-
-        <br>
-
-
-        <button
-            class="btn"
-            onclick="go('s7')"
-        >
-            Desbloquear el final 💜
-        </button>
+        Nivel Final · Nuestro futuro
 
     </div>
+
+    <h2>
+
+        Hay cosas que todavía
+        no hemos desbloqueado... 🔮
+
+    </h2>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="emoji">
+                🤗
+            </div>
+
+            <h3>
+                Primer abrazo
+            </h3>
+
+            <p>
+                Bloqueado por la distancia.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="emoji">
+                📸
+            </div>
+
+            <h3>
+                Primera foto juntos
+            </h3>
+
+            <p>
+                Esperando ser desbloqueada.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="emoji">
+                🌌
+            </div>
+
+            <h3>
+                Ver las estrellas
+            </h3>
+
+            <p>
+                Algún día, sin una pantalla
+                entre nosotros.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="emoji">
+                ❤️
+            </div>
+
+            <h3>
+                Muchos aniversarios
+            </h3>
+
+            <p>
+                Este apenas es el primero.
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+    <br>
+
+
+    <button
+        class="btn"
+        onclick="go('s7')"
+    >
+
+        Desbloquear el final 💜
+
+    </button>
+
+</div>
 
 </section>
 
 
-<!-- =========================
-     FINAL
-========================= -->
 
-<section id="s7" class="screen">
+<!-- =========================================
+     NIVEL 7
+========================================= -->
 
-    <div class="box center">
+<section
+    id="s7"
+    class="screen"
+>
 
-        <div class="bigheart">
-            💜
-        </div>
+<div class="box center">
 
-        <div class="tiny">
-            Misión completada
-        </div>
+    <div class="bigheart">
+        💜
+    </div>
 
-        <h2>
-            Feliz primer aniversario, Nephy
-        </h2>
+    <div class="tiny">
+        Misión completada
+    </div>
 
-        <p>
-            Hace un año te encontré
-            en un videojuego.
-        </p>
+    <h2>
 
-        <p>
-            Hoy puedo decir que encontrarte
-            fue una de las casualidades más bonitas
-            que me ha regalado la vida.
-        </p>
+        Feliz primer aniversario,
+        Nephy
 
-        <p>
-            Gracias por tu forma de ser.<br>
-            Gracias por tu voz.<br>
-            Gracias por cada conversación,
-            cada risa y cada día.
-        </p>
+    </h2>
 
-        <p>
-            <b>
-                Y si pudiera volver a ese primer día...
-            </b>
-        </p>
+    <p>
 
-        <p
-            style="
-                font-size:23px;
-                color:#e4b9ff;
-            "
-        >
-            te volvería a elegir. ❤️
-        </p>
+        Hace un año te encontré
+        en un videojuego.
 
-        <div class="signature">
+    </p>
 
-            25 · 08 · 2026<br>
+    <p>
 
-            Para mi Nephy,
-            con todo mi cariño. 💜
+        Hoy puedo decir que encontrarte
+        fue una de las casualidades
+        más bonitas que me ha regalado
+        la vida.
 
-        </div>
+    </p>
 
+    <p>
+
+        Gracias por tu forma de ser.<br>
+
+        Gracias por tu voz.<br>
+
+        Gracias por cada conversación,
+        cada risa y cada día.
+
+    </p>
+
+    <p>
+
+        <b>
+            Y si pudiera volver
+            a ese primer día...
+        </b>
+
+    </p>
+
+    <p
+        style="
+            font-size:23px;
+            color:#e4b9ff;
+        "
+    >
+
+        te volvería a elegir. ❤️
+
+    </p>
+
+    <div class="signature">
+
+        25 · 08 · 2026
 
         <br>
 
-
-        <button
-            class="btn"
-            onclick="go('s8')"
-        >
-            Hay un último secreto... 🌙
-        </button>
+        Para mi Nephy,
+        con todo mi cariño. 💜
 
     </div>
+
+
+    <br>
+
+
+    <button
+        class="btn"
+        onclick="go('s8')"
+    >
+
+        Hay un último secreto... 🌙
+
+    </button>
+
+</div>
 
 </section>
 
 
-<!-- =========================
-     SECRETO
-========================= -->
 
-<section id="s8" class="screen">
+<!-- =========================================
+     SECRETO FINAL
+========================================= -->
 
-    <div class="box center">
+<section
+    id="s8"
+    class="screen"
+>
 
-        <div class="tiny">
-            Secreto desbloqueado
-        </div>
+<div class="box center">
 
-        <h2>
-            Para cuando me extrañes 🌙
-        </h2>
-
-        <p>
-            Si algún día estás triste
-            o me extrañas, vuelve aquí.
-        </p>
-
-        <p>
-            Imagínate que todas estas estrellas
-            son un pedacito de mí diciéndote:
-        </p>
-
-        <h2
-            style="
-                font-size:24px;
-                color:#ddb1ff;
-            "
-        >
-            “Estoy aquí, Nephy.”
-        </h2>
-
-        <p>
-            Y cuando llegue el día
-            en que podamos estar juntos,
-            quiero que volvamos a mirar este juego
-            y podamos decir:
-        </p>
-
-        <p
-            style="
-                font-size:21px;
-            "
-        >
-            <b>
-                “Lo logramos.”
-            </b>
-            🥹💜
-        </p>
-
-
-        <br>
-
-
-        <button
-            class="btn"
-            onclick="location.reload()"
-        >
-            ↻ Jugar otra vez
-        </button>
-
+    <div class="tiny">
+        Secreto desbloqueado
     </div>
+
+    <h2>
+
+        Para cuando me extrañes 🌙
+
+    </h2>
+
+    <p>
+
+        Si algún día estás triste
+        o me extrañas, vuelve aquí.
+
+    </p>
+
+    <p>
+
+        Imagínate que todas estas estrellas
+        son un pedacito de mí diciéndote:
+
+    </p>
+
+    <h2
+        style="
+            font-size:24px;
+            color:#ddb1ff;
+        "
+    >
+
+        “Estoy aquí, Nephy.”
+
+    </h2>
+
+    <p>
+
+        Y cuando llegue el día
+        en que podamos estar juntos,
+        quiero que volvamos a mirar
+        este juego y podamos decir:
+
+    </p>
+
+    <p
+        style="
+            font-size:21px;
+        "
+    >
+
+        <b>
+            “Lo logramos.”
+        </b>
+
+        🥹💜
+
+    </p>
+
+    <br>
+
+    <button
+        class="btn"
+        onclick="location.reload()"
+    >
+
+        ↻ Jugar otra vez
+
+    </button>
+
+</div>
 
 </section>
 
 
 </div>
+
 <script>
 
 
@@ -1887,8 +2412,8 @@ p{
    CAMBIO DE PANTALLAS
 ========================================= */
 
+const screenIds = [
 
-const ids = [
     'start',
     's1',
     's2',
@@ -1898,21 +2423,30 @@ const ids = [
     's6',
     's7',
     's8'
+
 ];
 
 
 function go(id){
 
-    ids.forEach(function(x){
+    screenIds.forEach(
+        function(screenId){
 
-        const section =
-            document.getElementById(x);
+            const screen =
+                document.getElementById(
+                    screenId
+                );
 
-        if(section){
-            section.classList.remove('active');
+            if(screen){
+
+                screen.classList.remove(
+                    'active'
+                );
+
+            }
+
         }
-
-    });
+    );
 
 
     const target =
@@ -1920,45 +2454,59 @@ function go(id){
 
 
     if(target){
-        target.classList.add('active');
+
+        target.classList.add(
+            'active'
+        );
+
     }
 
 
     window.scrollTo({
         top:0,
-        behavior:'instant'
+        behavior:'smooth'
     });
 
 
     /*
-       Si volvemos a entrar al nivel 2,
-       dejamos el juego listo.
+       Si entramos al Nivel 2,
+       empezamos el nivel limpio.
     */
 
     if(id === 's2'){
-        resetGame();
+
+        startLevel2();
+
     }
 
 }
 
 
 /* =========================================
-   RECUERDOS
+   MEMORIAS
 ========================================= */
-
 
 function memory(title,text){
 
-    const box =
-        document.getElementById('memory');
+    const memoryBox =
+        document.getElementById(
+            'memory'
+        );
 
 
-    box.innerHTML =
-        '<p><b>'
-        + title
-        + '</b><br>'
-        + text
-        + '</p>';
+    memoryBox.innerHTML =
+
+        '<p>' +
+
+        '<b>' +
+        title +
+        '</b>' +
+
+        '<br>' +
+
+        text +
+
+        '</p>';
 
 }
 
@@ -1966,7 +2514,6 @@ function memory(title,text){
 /* =========================================
    NIVEL 2
 ========================================= */
-
 
 const map =
     document.getElementById('map');
@@ -1985,63 +2532,65 @@ const scoreBar =
 
 
 const levelMessage =
-    document.getElementById('levelMessage');
+    document.getElementById(
+        'levelMessage'
+    );
 
 
-/*
-   Posición del jugador.
+const loseMessage =
+    document.getElementById(
+        'loseMessage'
+    );
 
-   Usamos porcentajes para que
-   funcione correctamente tanto
-   en computadora como en celular.
-*/
 
+const damageFlash =
+    document.getElementById(
+        'damageFlash'
+    );
+
+
+/* =========================================
+   POSICIÓN
+========================================= */
 
 let px = 8;
+
 let py = 75;
 
 
 /*
-   Velocidad del movimiento.
+   Movimiento suave.
+
+   Pequeños pasos para que
+   no sea tosco.
 */
 
 const STEP_X = 3.2;
+
 const STEP_Y = 4.2;
 
 
-/*
-   Contador de lunas.
-*/
+/* =========================================
+   CONTADOR
+========================================= */
 
 let score = 0;
 
 
-/*
-   Evita que el nivel termine
-   varias veces.
-*/
+/* =========================================
+   ESTADOS
+========================================= */
+
+let levelLocked = false;
 
 let levelFinished = false;
 
 
-/*
-   Las 12 lunas representan
-   nuestro año juntos.
+/* =========================================
+   12 LUNAS
+========================================= */
 
-   No son enero-diciembre.
-
-   Son simplemente 12 lunas,
-   una por cada parte del año
-   que hemos recorrido juntos
-   desde:
-
-   25/08/2025
-   hasta
-   25/08/2026
-*/
-
-
-const moonSpots = [
+const moonPositions = [
 
     [18,18],
 
@@ -2070,54 +2619,81 @@ const moonSpots = [
 ];
 
 
+/* =========================================
+   OBSTÁCULOS
+========================================= */
+
+const hazardPositions = [
+
+    [25,25],
+
+    [40,24],
+
+    [55,23],
+
+    [70,37],
+
+    [35,47],
+
+    [52,59],
+
+    [69,53],
+
+    [29,67],
+
+    [64,75],
+
+    [88,48]
+
+];
+
+
 let moons = [];
+
+let hazards = [];
 
 
 /* =========================================
-   CREAR LAS 12 LUNAS
+   CREAR LUNAS
 ========================================= */
-
 
 function createMoons(){
 
     /*
-       Borramos lunas anteriores.
+       Limpiar las anteriores.
     */
 
     document
-        .querySelectorAll('.collect')
-        .forEach(function(el){
+        .querySelectorAll(
+            '#s2 .collect'
+        )
+        .forEach(
+            function(element){
 
-            el.remove();
+                element.remove();
 
-        });
+            }
+        );
 
 
     moons = [];
 
 
-    moonSpots.forEach(
+    moonPositions.forEach(
         function(position,index){
 
             const moon =
-                document.createElement('div');
+                document.createElement(
+                    'div'
+                );
 
 
-            moon.className = 'collect';
+            moon.className =
+                'collect';
 
-
-            /*
-               Alternamos ligeramente
-               los emojis para que el mapa
-               no se vea repetitivo.
-            */
 
             moon.textContent =
-                index % 3 === 0
-                ? '🌙'
-                : index % 3 === 1
-                ? '☾'
-                : '🌙';
+                '🌙';
 
 
             moon.style.left =
@@ -2128,25 +2704,22 @@ function createMoons(){
                 position[1] + '%';
 
 
+            moon.dataset.index =
+                index;
+
+
+            moon.dataset.got =
+                'false';
+
+
             /*
-               Guardamos la posición
-               para poder detectar
-               correctamente el contacto.
-            */
-
-            moon.dataset.index = index;
-
-
-            /*
-               Al tocar una luna
-               también se recoge.
+               También se puede tocar
+               directamente en celular.
             */
 
             moon.addEventListener(
                 'click',
-                function(event){
-
-                    event.stopPropagation();
+                function(){
 
                     collectMoon(moon);
 
@@ -2165,19 +2738,118 @@ function createMoons(){
 
 
 /* =========================================
-   REINICIAR NIVEL
+   CREAR OBSTÁCULOS
 ========================================= */
 
+function createHazards(){
 
-function resetGame(){
+    document
+        .querySelectorAll(
+            '#s2 .hazard'
+        )
+        .forEach(
+            function(element){
+
+                element.remove();
+
+            }
+        );
+
+
+    hazards = [];
+
+
+    const icons = [
+
+        '☄️',
+        '🪨',
+        '💫'
+
+    ];
+
+
+    hazardPositions.forEach(
+        function(position,index){
+
+            const hazard =
+                document.createElement(
+                    'div'
+                );
+
+
+            hazard.className =
+                'hazard';
+
+
+            hazard.textContent =
+                icons[
+                    index %
+                    icons.length
+                ];
+
+
+            hazard.style.left =
+                position[0] + '%';
+
+
+            hazard.style.top =
+                position[1] + '%';
+
+
+            map.appendChild(
+                hazard
+            );
+
+
+            hazards.push(
+                hazard
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   INICIAR / REINICIAR NIVEL
+========================================= */
+
+function startLevel2(){
 
     px = 8;
+
     py = 75;
 
     score = 0;
 
+    levelLocked = false;
+
     levelFinished = false;
 
+
+    /*
+       Ocultar mensajes.
+    */
+
+    levelMessage.classList.remove(
+        'show'
+    );
+
+
+    loseMessage.classList.remove(
+        'show'
+    );
+
+
+    damageFlash.classList.remove(
+        'show'
+    );
+
+
+    /*
+       Colocar personaje.
+    */
 
     player.style.left =
         px + '%';
@@ -2186,6 +2858,10 @@ function resetGame(){
     player.style.top =
         py + '%';
 
+
+    /*
+       Contador.
+    */
 
     scoreElement.textContent =
         '0';
@@ -2195,37 +2871,39 @@ function resetGame(){
         '0%';
 
 
-    levelMessage.classList.remove('show');
-
+    /*
+       Crear lunas y obstáculos.
+    */
 
     createMoons();
+
+    createHazards();
 
 }
 
 
 /* =========================================
-   MOVER PERSONAJE
+   MOVIMIENTO
 ========================================= */
-
 
 function move(dx,dy){
 
     /*
-       Si ya terminamos,
-       ignoramos controles.
+       No mover si está bloqueado.
     */
 
-    if(levelFinished){
+    if(
+        levelLocked ||
+        levelFinished
+    ){
+
         return;
+
     }
 
 
     /*
-       Movimiento limitado
-       dentro del mapa.
-
-       Esto evita que el personaje
-       desaparezca.
+       Mover.
     */
 
     px += dx * STEP_X;
@@ -2234,25 +2912,32 @@ function move(dx,dy){
 
 
     /*
-       Límites seguros.
+       Límites del mapa.
 
-       Nunca puede salir del mapa.
+       Esto evita que desaparezca
+       el personaje.
     */
 
     px = Math.max(
         6,
-        Math.min(94,px)
+        Math.min(
+            94,
+            px
+        )
     );
 
 
     py = Math.max(
         8,
-        Math.min(92,py)
+        Math.min(
+            92,
+            py
+        )
     );
 
 
     /*
-       Aplicamos posición.
+       Actualizar visual.
     */
 
     player.style.left =
@@ -2264,16 +2949,12 @@ function move(dx,dy){
 
 
     /*
-       Revisamos si tocó una luna.
+       Revisar todo.
     */
 
     checkMoonCollisions();
 
-
-    /*
-       Revisamos si llegó
-       al personaje final.
-    */
+    checkHazardCollisions();
 
     checkGoal();
 
@@ -2281,9 +2962,8 @@ function move(dx,dy){
 
 
 /* =========================================
-   DETECTAR LUNAS
+   COLISIÓN CON LUNAS
 ========================================= */
-
 
 function checkMoonCollisions(){
 
@@ -2291,16 +2971,14 @@ function checkMoonCollisions(){
         function(moon){
 
             if(
-                moon.dataset.got === 'true'
+                moon.dataset.got ===
+                'true'
             ){
+
                 return;
+
             }
 
-
-            /*
-               Posición de la luna
-               en porcentaje.
-            */
 
             const moonX =
                 parseFloat(
@@ -2314,38 +2992,33 @@ function checkMoonCollisions(){
                 );
 
 
-            /*
-               Distancia entre jugador
-               y luna.
-
-               No usamos getBoundingClientRect
-               porque trabajar en porcentajes
-               hace que sea mucho más estable
-               en celular.
-            */
-
             const distance =
                 Math.sqrt(
+
                     Math.pow(
                         px - moonX,
                         2
                     )
+
                     +
+
                     Math.pow(
                         py - moonY,
                         2
                     )
+
                 );
 
 
             /*
-               Radio de recogida.
+               Radio generoso.
 
-               Es bastante generoso
-               para que sea fácil.
+               No hace falta ser exacto.
             */
 
-            if(distance < 6.5){
+            if(
+                distance < 7
+            ){
 
                 collectMoon(moon);
 
@@ -2361,17 +3034,15 @@ function checkMoonCollisions(){
    RECOGER LUNA
 ========================================= */
 
-
 function collectMoon(moon){
 
-    /*
-       Evitamos recogerla dos veces.
-    */
-
     if(
-        moon.dataset.got === 'true'
+        moon.dataset.got ===
+        'true'
     ){
+
         return;
+
     }
 
 
@@ -2380,7 +3051,7 @@ function collectMoon(moon){
 
 
     /*
-       Animación visual.
+       Animación.
     */
 
     moon.classList.add(
@@ -2389,18 +3060,7 @@ function collectMoon(moon){
 
 
     /*
-       Pequeño efecto de sonido
-       generado por el navegador.
-
-       No necesita ningún archivo.
-       Es muy corto y sutil.
-    */
-
-    playCollectSound();
-
-
-    /*
-       Sumamos al contador.
+       Sumar.
     */
 
     score++;
@@ -2411,17 +3071,18 @@ function collectMoon(moon){
 
 
     /*
-       Actualizamos barra.
+       Barra.
     */
 
     scoreBar.style.width =
-        (score / 12 * 100) + '%';
+        (
+            score / 12 * 100
+        )
+        + '%';
 
 
     /*
-       Después de la animación
-       escondemos completamente
-       la luna.
+       Quitar visualmente.
     */
 
     setTimeout(
@@ -2438,46 +3099,173 @@ function collectMoon(moon){
 
 
 /* =========================================
-   LLEGAR AL PERSONAJE
+   COLISIÓN CON OBSTÁCULOS
 ========================================= */
 
+function checkHazardCollisions(){
+
+    hazards.forEach(
+        function(hazard){
+
+            const hazardX =
+                parseFloat(
+                    hazard.style.left
+                );
+
+
+            const hazardY =
+                parseFloat(
+                    hazard.style.top
+                );
+
+
+            const distance =
+                Math.sqrt(
+
+                    Math.pow(
+                        px - hazardX,
+                        2
+                    )
+
+                    +
+
+                    Math.pow(
+                        py - hazardY,
+                        2
+                    )
+
+                );
+
+
+            /*
+               Colisión fácil.
+
+               El jugador tiene
+               margen suficiente.
+            */
+
+            if(
+                distance < 5.8
+            ){
+
+                loseLevel();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   PERDER
+========================================= */
+
+function loseLevel(){
+
+    if(
+        levelLocked ||
+        levelFinished
+    ){
+
+        return;
+
+    }
+
+
+    levelLocked = true;
+
+
+    /*
+       Flash.
+    */
+
+    damageFlash.classList.remove(
+        'show'
+    );
+
+
+    void damageFlash.offsetWidth;
+
+
+    damageFlash.classList.add(
+        'show'
+    );
+
+
+    /*
+       Mensaje.
+    */
+
+    loseMessage.classList.add(
+        'show'
+    );
+
+
+    /*
+       Reiniciar después
+       de un pequeño momento.
+    */
+
+    setTimeout(
+        function(){
+
+            loseMessage.classList.remove(
+                'show'
+            );
+
+
+            startLevel2();
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================
+   COMPROBAR SOL
+========================================= */
 
 function checkGoal(){
 
     /*
-       La meta está aproximadamente
-       en:
-
-       X = 93
-       Y = 8
+       El sol está aproximadamente
+       en 94%, 8%.
     */
 
-    const goalX = 93;
+    const goalX = 94;
+
     const goalY = 8;
 
 
     const distance =
         Math.sqrt(
+
             Math.pow(
                 px - goalX,
                 2
             )
+
             +
+
             Math.pow(
                 py - goalY,
                 2
             )
+
         );
 
 
     /*
-       Para que no sea frustrante,
-       la zona final es grande.
+       Solo se puede terminar
+       después de recoger las 12.
     */
 
     if(
-        distance < 9
-        &&
+        distance < 10 &&
         score === 12
     ){
 
@@ -2489,22 +3277,27 @@ function checkGoal(){
 
 
 /* =========================================
-   FINAL DEL NIVEL 2
+   TERMINAR NIVEL
 ========================================= */
-
 
 function finishLevel(){
 
-    if(levelFinished){
+    if(
+        levelFinished
+    ){
+
         return;
+
     }
 
 
     levelFinished = true;
 
+    levelLocked = true;
+
 
     /*
-       Aseguramos barra completa.
+       Asegurar 12/12.
     */
 
     score = 12;
@@ -2517,7 +3310,14 @@ function finishLevel(){
 
 
     /*
-       Mostramos mensaje.
+       Celebración.
+    */
+
+    celebration();
+
+
+    /*
+       Mostrar mensaje.
     */
 
     setTimeout(
@@ -2528,240 +3328,39 @@ function finishLevel(){
             );
 
         },
-        250
+        400
     );
 
-
-    /*
-       Celebración visual.
-    */
-
-    createCelebration();
-
 }
-
-
-/* =========================================
-   EFECTO DE RECOLECCIÓN
-========================================= */
-
-
-let audioContext = null;
-
-
-function playCollectSound(){
-
-    /*
-       El usuario pidió quitar el audio.
-       Esto NO reproduce ningún archivo
-       ni música.
-
-       Es únicamente un pequeño sonido
-       generado por el navegador al recoger
-       una luna, para darle feedback al juego.
-
-       Si prefieres cero sonido,
-       puedes dejar esta función vacía.
-    */
-
-    try{
-
-        if(!audioContext){
-
-            audioContext =
-                new (
-                    window.AudioContext ||
-                    window.webkitAudioContext
-                )();
-
-        }
-
-
-        const oscillator =
-            audioContext.createOscillator();
-
-
-        const gain =
-            audioContext.createGain();
-
-
-        oscillator.type =
-            'sine';
-
-
-        oscillator.frequency.setValueAtTime(
-            620,
-            audioContext.currentTime
-        );
-
-
-        oscillator.frequency.exponentialRampToValueAtTime(
-            900,
-            audioContext.currentTime + 0.08
-        );
-
-
-        gain.gain.setValueAtTime(
-            0.035,
-            audioContext.currentTime
-        );
-
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            audioContext.currentTime + 0.12
-        );
-
-
-        oscillator.connect(gain);
-
-        gain.connect(
-            audioContext.destination
-        );
-
-
-        oscillator.start();
-
-        oscillator.stop(
-            audioContext.currentTime + 0.12
-        );
-
-    }catch(error){
-
-        /*
-           Si el navegador bloquea
-           el sonido, no pasa nada.
-        */
-
-    }
-
-}
-
-
-/* =========================================
-   TECLADO PC
-========================================= */
-
-
-window.addEventListener(
-    'keydown',
-    function(event){
-
-        /*
-           Solo funciona dentro
-           del nivel 2.
-        */
-
-        if(
-            !document
-            .getElementById('s2')
-            .classList
-            .contains('active')
-        ){
-            return;
-        }
-
-
-        switch(event.key){
-
-            case 'ArrowUp':
-
-                event.preventDefault();
-
-                move(0,-1);
-
-                break;
-
-
-            case 'ArrowDown':
-
-                event.preventDefault();
-
-                move(0,1);
-
-                break;
-
-
-            case 'ArrowLeft':
-
-                event.preventDefault();
-
-                move(-1,0);
-
-                break;
-
-
-            case 'ArrowRight':
-
-                event.preventDefault();
-
-                move(1,0);
-
-                break;
-
-        }
-
-    }
-);
-
-
-/* =========================================
-   CONTROL TÁCTIL
-========================================= */
-
-
-/*
-   Evitamos que al mantener pulsado
-   un botón el celular haga acciones
-   raras de selección.
-*/
-
-
-document
-    .querySelectorAll('.controls button')
-    .forEach(
-        function(button){
-
-            button.addEventListener(
-                'touchstart',
-                function(event){
-
-                    event.preventDefault();
-
-                },
-                {
-                    passive:false
-                }
-            );
-
-        }
-    );
 
 
 /* =========================================
    CELEBRACIÓN
 ========================================= */
 
-
-function createCelebration(){
+function celebration(){
 
     const symbols = [
+
         '💜',
         '✦',
-        '🌙',
         '✨',
-        '☾'
+        '🌙',
+        '☄️'
+
     ];
 
 
     for(
         let i = 0;
-        i < 18;
+        i < 25;
         i++
     ){
 
         const particle =
-            document.createElement('div');
+            document.createElement(
+                'div'
+            );
 
 
         particle.textContent =
@@ -2779,21 +3378,30 @@ function createCelebration(){
 
 
         particle.style.left =
-            (10 + Math.random() * 80)
+            (
+                10 +
+                Math.random() * 80
+            )
             + '%';
 
 
         particle.style.top =
-            (20 + Math.random() * 60)
+            (
+                20 +
+                Math.random() * 60
+            )
             + '%';
 
 
         particle.style.zIndex =
-            '25';
+            '120';
 
 
         particle.style.fontSize =
-            (14 + Math.random() * 18)
+            (
+                14 +
+                Math.random() * 18
+            )
             + 'px';
 
 
@@ -2839,22 +3447,102 @@ function createCelebration(){
 
 
 /* =========================================
-   INICIALIZAR
+   TECLADO
 ========================================= */
 
+window.addEventListener(
+    'keydown',
+    function(event){
 
-createMoons();
+        /*
+           Solo Nivel 2.
+        */
 
-</script>
-<script>
+        const level2 =
+            document.getElementById(
+                's2'
+            );
+
+
+        if(
+            !level2.classList.contains(
+                'active'
+            )
+        ){
+
+            return;
+
+        }
+
+
+        if(levelLocked){
+
+            return;
+
+        }
+
+
+        switch(
+            event.key.toLowerCase()
+        ){
+
+            case 'arrowup':
+
+            case 'w':
+
+                event.preventDefault();
+
+                move(0,-1);
+
+                break;
+
+
+            case 'arrowdown':
+
+            case 's':
+
+                event.preventDefault();
+
+                move(0,1);
+
+                break;
+
+
+            case 'arrowleft':
+
+            case 'a':
+
+                event.preventDefault();
+
+                move(-1,0);
+
+                break;
+
+
+            case 'arrowright':
+
+            case 'd':
+
+                event.preventDefault();
+
+                move(1,0);
+
+                break;
+
+        }
+
+    }
+);
+
 
 /* =========================================
    FONDO ESPACIAL
 ========================================= */
 
-
 const canvas =
-    document.getElementById('space');
+    document.getElementById(
+        'space'
+    );
 
 
 const ctx =
@@ -2864,23 +3552,18 @@ const ctx =
 let stars = [];
 
 
-/* =========================================
-   AJUSTAR CANVAS
-========================================= */
+function resizeCanvas(){
 
-
-function resizeSpace(){
-
-    const dpr =
+    const ratio =
         window.devicePixelRatio || 1;
 
 
     canvas.width =
-        window.innerWidth * dpr;
+        window.innerWidth * ratio;
 
 
     canvas.height =
-        window.innerHeight * dpr;
+        window.innerHeight * ratio;
 
 
     canvas.style.width =
@@ -2892,84 +3575,59 @@ function resizeSpace(){
 
 
     ctx.setTransform(
-        dpr,
+        ratio,
         0,
         0,
-        dpr,
+        ratio,
         0,
         0
     );
 
 
-    /*
-       Creamos una cantidad razonable
-       de estrellas dependiendo
-       del tamaño de pantalla.
-    */
+    stars =
+        Array.from(
+            {
+                length:
+                    Math.min(
+                        180,
+                        Math.floor(
+                            window.innerWidth / 6
+                        )
+                    )
+            },
+            function(){
 
-    const amount =
-        Math.min(
-            180,
-            Math.floor(
-                window.innerWidth / 5
-            )
+                return {
+
+                    x:
+                        Math.random()
+                        *
+                        window.innerWidth,
+
+                    y:
+                        Math.random()
+                        *
+                        window.innerHeight,
+
+                    r:
+                        Math.random()
+                        * 1.4
+                        + .2,
+
+                    a:
+                        Math.random()
+                        * .7
+                        + .2
+
+                };
+
+            }
         );
-
-
-    stars = [];
-
-
-    for(
-        let i = 0;
-        i < amount;
-        i++
-    ){
-
-        stars.push({
-
-            x:
-                Math.random()
-                *
-                window.innerWidth,
-
-            y:
-                Math.random()
-                *
-                window.innerHeight,
-
-            r:
-                Math.random()
-                * 1.3
-                + .25,
-
-            alpha:
-                Math.random()
-                * .65
-                + .15,
-
-            speed:
-                Math.random()
-                * .015
-                + .003,
-
-            phase:
-                Math.random()
-                * Math.PI
-                * 2
-
-        });
-
-    }
 
 }
 
 
-/* =========================================
-   DIBUJAR ESTRELLAS
-========================================= */
-
-
-function drawSpace(time){
+function drawStars(){
 
     ctx.clearRect(
         0,
@@ -2982,33 +3640,13 @@ function drawSpace(time){
     stars.forEach(
         function(star){
 
-            /*
-               Brillo suave.
-            */
-
-            const twinkle =
-                star.alpha
-                +
-                Math.sin(
-                    time * star.speed
-                    +
-                    star.phase
-                ) * .12;
-
-
             ctx.globalAlpha =
-                Math.max(
-                    .05,
-                    twinkle
-                );
-
+                star.a;
 
             ctx.fillStyle =
                 '#ffffff';
 
-
             ctx.beginPath();
-
 
             ctx.arc(
                 star.x,
@@ -3017,7 +3655,6 @@ function drawSpace(time){
                 0,
                 Math.PI * 2
             );
-
 
             ctx.fill();
 
@@ -3029,37 +3666,1303 @@ function drawSpace(time){
 
 
     requestAnimationFrame(
-        drawSpace
+        drawStars
+    );
+
+}
+
+
+window.addEventListener(
+    'resize',
+    resizeCanvas
+);
+
+
+resizeCanvas();
+
+drawStars();
+
+
+</script>
+<script>
+
+
+/* =========================================
+   CAMBIO DE PANTALLAS
+========================================= */
+
+const screenIds = [
+
+    'start',
+    's1',
+    's2',
+    's3',
+    's4',
+    's5',
+    's6',
+    's7',
+    's8'
+
+];
+
+
+function go(id){
+
+    screenIds.forEach(
+        function(screenId){
+
+            const screen =
+                document.getElementById(
+                    screenId
+                );
+
+            if(screen){
+
+                screen.classList.remove(
+                    'active'
+                );
+
+            }
+
+        }
+    );
+
+
+    const target =
+        document.getElementById(id);
+
+
+    if(target){
+
+        target.classList.add(
+            'active'
+        );
+
+    }
+
+
+    window.scrollTo({
+        top:0,
+        behavior:'smooth'
+    });
+
+
+    /*
+       Si entramos al Nivel 2,
+       empezamos el nivel limpio.
+    */
+
+    if(id === 's2'){
+
+        startLevel2();
+
+    }
+
+}
+
+
+/* =========================================
+   MEMORIAS
+========================================= */
+
+function memory(title,text){
+
+    const memoryBox =
+        document.getElementById(
+            'memory'
+        );
+
+
+    memoryBox.innerHTML =
+
+        '<p>' +
+
+        '<b>' +
+        title +
+        '</b>' +
+
+        '<br>' +
+
+        text +
+
+        '</p>';
+
+}
+
+
+/* =========================================
+   NIVEL 2
+========================================= */
+
+const map =
+    document.getElementById('map');
+
+
+const player =
+    document.getElementById('player');
+
+
+const scoreElement =
+    document.getElementById('score');
+
+
+const scoreBar =
+    document.getElementById('scorebar');
+
+
+const levelMessage =
+    document.getElementById(
+        'levelMessage'
+    );
+
+
+const loseMessage =
+    document.getElementById(
+        'loseMessage'
+    );
+
+
+const damageFlash =
+    document.getElementById(
+        'damageFlash'
+    );
+
+
+/* =========================================
+   POSICIÓN
+========================================= */
+
+let px = 8;
+
+let py = 75;
+
+
+/*
+   Movimiento suave.
+
+   Pequeños pasos para que
+   no sea tosco.
+*/
+
+const STEP_X = 3.2;
+
+const STEP_Y = 4.2;
+
+
+/* =========================================
+   CONTADOR
+========================================= */
+
+let score = 0;
+
+
+/* =========================================
+   ESTADOS
+========================================= */
+
+let levelLocked = false;
+
+let levelFinished = false;
+
+
+/* =========================================
+   12 LUNAS
+========================================= */
+
+const moonPositions = [
+
+    [18,18],
+
+    [31,32],
+
+    [47,16],
+
+    [62,27],
+
+    [79,17],
+
+    [25,53],
+
+    [42,70],
+
+    [59,48],
+
+    [76,61],
+
+    [17,82],
+
+    [52,87],
+
+    [78,83]
+
+];
+
+
+/* =========================================
+   OBSTÁCULOS
+========================================= */
+
+const hazardPositions = [
+
+    [25,25],
+
+    [40,24],
+
+    [55,23],
+
+    [70,37],
+
+    [35,47],
+
+    [52,59],
+
+    [69,53],
+
+    [29,67],
+
+    [64,75],
+
+    [88,48]
+
+];
+
+
+let moons = [];
+
+let hazards = [];
+
+
+/* =========================================
+   CREAR LUNAS
+========================================= */
+
+function createMoons(){
+
+    /*
+       Limpiar las anteriores.
+    */
+
+    document
+        .querySelectorAll(
+            '#s2 .collect'
+        )
+        .forEach(
+            function(element){
+
+                element.remove();
+
+            }
+        );
+
+
+    moons = [];
+
+
+    moonPositions.forEach(
+        function(position,index){
+
+            const moon =
+                document.createElement(
+                    'div'
+                );
+
+
+            moon.className =
+                'collect';
+
+
+            moon.textContent =
+                '🌙';
+
+
+            moon.style.left =
+                position[0] + '%';
+
+
+            moon.style.top =
+                position[1] + '%';
+
+
+            moon.dataset.index =
+                index;
+
+
+            moon.dataset.got =
+                'false';
+
+
+            /*
+               También se puede tocar
+               directamente en celular.
+            */
+
+            moon.addEventListener(
+                'click',
+                function(){
+
+                    collectMoon(moon);
+
+                }
+            );
+
+
+            map.appendChild(moon);
+
+            moons.push(moon);
+
+        }
     );
 
 }
 
 
 /* =========================================
-   EVENTOS
+   CREAR OBSTÁCULOS
 ========================================= */
 
+function createHazards(){
+
+    document
+        .querySelectorAll(
+            '#s2 .hazard'
+        )
+        .forEach(
+            function(element){
+
+                element.remove();
+
+            }
+        );
+
+
+    hazards = [];
+
+
+    const icons = [
+
+        '☄️',
+        '🪨',
+        '💫'
+
+    ];
+
+
+    hazardPositions.forEach(
+        function(position,index){
+
+            const hazard =
+                document.createElement(
+                    'div'
+                );
+
+
+            hazard.className =
+                'hazard';
+
+
+            hazard.textContent =
+                icons[
+                    index %
+                    icons.length
+                ];
+
+
+            hazard.style.left =
+                position[0] + '%';
+
+
+            hazard.style.top =
+                position[1] + '%';
+
+
+            map.appendChild(
+                hazard
+            );
+
+
+            hazards.push(
+                hazard
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   INICIAR / REINICIAR NIVEL
+========================================= */
+
+function startLevel2(){
+
+    px = 8;
+
+    py = 75;
+
+    score = 0;
+
+    levelLocked = false;
+
+    levelFinished = false;
+
+
+    /*
+       Ocultar mensajes.
+    */
+
+    levelMessage.classList.remove(
+        'show'
+    );
+
+
+    loseMessage.classList.remove(
+        'show'
+    );
+
+
+    damageFlash.classList.remove(
+        'show'
+    );
+
+
+    /*
+       Colocar personaje.
+    */
+
+    player.style.left =
+        px + '%';
+
+
+    player.style.top =
+        py + '%';
+
+
+    /*
+       Contador.
+    */
+
+    scoreElement.textContent =
+        '0';
+
+
+    scoreBar.style.width =
+        '0%';
+
+
+    /*
+       Crear lunas y obstáculos.
+    */
+
+    createMoons();
+
+    createHazards();
+
+}
+
+
+/* =========================================
+   MOVIMIENTO
+========================================= */
+
+function move(dx,dy){
+
+    /*
+       No mover si está bloqueado.
+    */
+
+    if(
+        levelLocked ||
+        levelFinished
+    ){
+
+        return;
+
+    }
+
+
+    /*
+       Mover.
+    */
+
+    px += dx * STEP_X;
+
+    py += dy * STEP_Y;
+
+
+    /*
+       Límites del mapa.
+
+       Esto evita que desaparezca
+       el personaje.
+    */
+
+    px = Math.max(
+        6,
+        Math.min(
+            94,
+            px
+        )
+    );
+
+
+    py = Math.max(
+        8,
+        Math.min(
+            92,
+            py
+        )
+    );
+
+
+    /*
+       Actualizar visual.
+    */
+
+    player.style.left =
+        px + '%';
+
+
+    player.style.top =
+        py + '%';
+
+
+    /*
+       Revisar todo.
+    */
+
+    checkMoonCollisions();
+
+    checkHazardCollisions();
+
+    checkGoal();
+
+}
+
+
+/* =========================================
+   COLISIÓN CON LUNAS
+========================================= */
+
+function checkMoonCollisions(){
+
+    moons.forEach(
+        function(moon){
+
+            if(
+                moon.dataset.got ===
+                'true'
+            ){
+
+                return;
+
+            }
+
+
+            const moonX =
+                parseFloat(
+                    moon.style.left
+                );
+
+
+            const moonY =
+                parseFloat(
+                    moon.style.top
+                );
+
+
+            const distance =
+                Math.sqrt(
+
+                    Math.pow(
+                        px - moonX,
+                        2
+                    )
+
+                    +
+
+                    Math.pow(
+                        py - moonY,
+                        2
+                    )
+
+                );
+
+
+            /*
+               Radio generoso.
+
+               No hace falta ser exacto.
+            */
+
+            if(
+                distance < 7
+            ){
+
+                collectMoon(moon);
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   RECOGER LUNA
+========================================= */
+
+function collectMoon(moon){
+
+    if(
+        moon.dataset.got ===
+        'true'
+    ){
+
+        return;
+
+    }
+
+
+    moon.dataset.got =
+        'true';
+
+
+    /*
+       Animación.
+    */
+
+    moon.classList.add(
+        'collected'
+    );
+
+
+    /*
+       Sumar.
+    */
+
+    score++;
+
+
+    scoreElement.textContent =
+        score;
+
+
+    /*
+       Barra.
+    */
+
+    scoreBar.style.width =
+        (
+            score / 12 * 100
+        )
+        + '%';
+
+
+    /*
+       Quitar visualmente.
+    */
+
+    setTimeout(
+        function(){
+
+            moon.style.display =
+                'none';
+
+        },
+        500
+    );
+
+}
+
+
+/* =========================================
+   COLISIÓN CON OBSTÁCULOS
+========================================= */
+
+function checkHazardCollisions(){
+
+    hazards.forEach(
+        function(hazard){
+
+            const hazardX =
+                parseFloat(
+                    hazard.style.left
+                );
+
+
+            const hazardY =
+                parseFloat(
+                    hazard.style.top
+                );
+
+
+            const distance =
+                Math.sqrt(
+
+                    Math.pow(
+                        px - hazardX,
+                        2
+                    )
+
+                    +
+
+                    Math.pow(
+                        py - hazardY,
+                        2
+                    )
+
+                );
+
+
+            /*
+               Colisión fácil.
+
+               El jugador tiene
+               margen suficiente.
+            */
+
+            if(
+                distance < 5.8
+            ){
+
+                loseLevel();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   PERDER
+========================================= */
+
+function loseLevel(){
+
+    if(
+        levelLocked ||
+        levelFinished
+    ){
+
+        return;
+
+    }
+
+
+    levelLocked = true;
+
+
+    /*
+       Flash.
+    */
+
+    damageFlash.classList.remove(
+        'show'
+    );
+
+
+    void damageFlash.offsetWidth;
+
+
+    damageFlash.classList.add(
+        'show'
+    );
+
+
+    /*
+       Mensaje.
+    */
+
+    loseMessage.classList.add(
+        'show'
+    );
+
+
+    /*
+       Reiniciar después
+       de un pequeño momento.
+    */
+
+    setTimeout(
+        function(){
+
+            loseMessage.classList.remove(
+                'show'
+            );
+
+
+            startLevel2();
+
+        },
+        900
+    );
+
+}
+
+
+/* =========================================
+   COMPROBAR SOL
+========================================= */
+
+function checkGoal(){
+
+    /*
+       El sol está aproximadamente
+       en 94%, 8%.
+    */
+
+    const goalX = 94;
+
+    const goalY = 8;
+
+
+    const distance =
+        Math.sqrt(
+
+            Math.pow(
+                px - goalX,
+                2
+            )
+
+            +
+
+            Math.pow(
+                py - goalY,
+                2
+            )
+
+        );
+
+
+    /*
+       Solo se puede terminar
+       después de recoger las 12.
+    */
+
+    if(
+        distance < 10 &&
+        score === 12
+    ){
+
+        finishLevel();
+
+    }
+
+}
+
+
+/* =========================================
+   TERMINAR NIVEL
+========================================= */
+
+function finishLevel(){
+
+    if(
+        levelFinished
+    ){
+
+        return;
+
+    }
+
+
+    levelFinished = true;
+
+    levelLocked = true;
+
+
+    /*
+       Asegurar 12/12.
+    */
+
+    score = 12;
+
+    scoreElement.textContent =
+        '12';
+
+    scoreBar.style.width =
+        '100%';
+
+
+    /*
+       Celebración.
+    */
+
+    celebration();
+
+
+    /*
+       Mostrar mensaje.
+    */
+
+    setTimeout(
+        function(){
+
+            levelMessage.classList.add(
+                'show'
+            );
+
+        },
+        400
+    );
+
+}
+
+
+/* =========================================
+   CELEBRACIÓN
+========================================= */
+
+function celebration(){
+
+    const symbols = [
+
+        '💜',
+        '✦',
+        '✨',
+        '🌙',
+        '☄️'
+
+    ];
+
+
+    for(
+        let i = 0;
+        i < 25;
+        i++
+    ){
+
+        const particle =
+            document.createElement(
+                'div'
+            );
+
+
+        particle.textContent =
+            symbols[
+                Math.floor(
+                    Math.random()
+                    *
+                    symbols.length
+                )
+            ];
+
+
+        particle.style.position =
+            'absolute';
+
+
+        particle.style.left =
+            (
+                10 +
+                Math.random() * 80
+            )
+            + '%';
+
+
+        particle.style.top =
+            (
+                20 +
+                Math.random() * 60
+            )
+            + '%';
+
+
+        particle.style.zIndex =
+            '120';
+
+
+        particle.style.fontSize =
+            (
+                14 +
+                Math.random() * 18
+            )
+            + 'px';
+
+
+        particle.style.pointerEvents =
+            'none';
+
+
+        particle.style.transition =
+            'all 1.2s ease';
+
+
+        map.appendChild(
+            particle
+        );
+
+
+        setTimeout(
+            function(){
+
+                particle.style.transform =
+                    'translateY(-90px) scale(1.5)';
+
+                particle.style.opacity =
+                    '0';
+
+            },
+            30
+        );
+
+
+        setTimeout(
+            function(){
+
+                particle.remove();
+
+            },
+            1400
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   TECLADO
+========================================= */
 
 window.addEventListener(
-    'resize',
-    resizeSpace
+    'keydown',
+    function(event){
+
+        /*
+           Solo Nivel 2.
+        */
+
+        const level2 =
+            document.getElementById(
+                's2'
+            );
+
+
+        if(
+            !level2.classList.contains(
+                'active'
+            )
+        ){
+
+            return;
+
+        }
+
+
+        if(levelLocked){
+
+            return;
+
+        }
+
+
+        switch(
+            event.key.toLowerCase()
+        ){
+
+            case 'arrowup':
+
+            case 'w':
+
+                event.preventDefault();
+
+                move(0,-1);
+
+                break;
+
+
+            case 'arrowdown':
+
+            case 's':
+
+                event.preventDefault();
+
+                move(0,1);
+
+                break;
+
+
+            case 'arrowleft':
+
+            case 'a':
+
+                event.preventDefault();
+
+                move(-1,0);
+
+                break;
+
+
+            case 'arrowright':
+
+            case 'd':
+
+                event.preventDefault();
+
+                move(1,0);
+
+                break;
+
+        }
+
+    }
 );
 
 
 /* =========================================
-   INICIO DEL FONDO
+   FONDO ESPACIAL
 ========================================= */
 
+const canvas =
+    document.getElementById(
+        'space'
+    );
 
-resizeSpace();
 
-requestAnimationFrame(
-    drawSpace
+const ctx =
+    canvas.getContext('2d');
+
+
+let stars = [];
+
+
+function resizeCanvas(){
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+
+    canvas.width =
+        window.innerWidth * ratio;
+
+
+    canvas.height =
+        window.innerHeight * ratio;
+
+
+    canvas.style.width =
+        window.innerWidth + 'px';
+
+
+    canvas.style.height =
+        window.innerHeight + 'px';
+
+
+    ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+    );
+
+
+    stars =
+        Array.from(
+            {
+                length:
+                    Math.min(
+                        180,
+                        Math.floor(
+                            window.innerWidth / 6
+                        )
+                    )
+            },
+            function(){
+
+                return {
+
+                    x:
+                        Math.random()
+                        *
+                        window.innerWidth,
+
+                    y:
+                        Math.random()
+                        *
+                        window.innerHeight,
+
+                    r:
+                        Math.random()
+                        * 1.4
+                        + .2,
+
+                    a:
+                        Math.random()
+                        * .7
+                        + .2
+
+                };
+
+            }
+        );
+
+}
+
+
+function drawStars(){
+
+    ctx.clearRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+    );
+
+
+    stars.forEach(
+        function(star){
+
+            ctx.globalAlpha =
+                star.a;
+
+            ctx.fillStyle =
+                '#ffffff';
+
+            ctx.beginPath();
+
+            ctx.arc(
+                star.x,
+                star.y,
+                star.r,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+
+    requestAnimationFrame(
+        drawStars
+    );
+
+}
+
+
+window.addEventListener(
+    'resize',
+    resizeCanvas
 );
 
 
+resizeCanvas();
+
+drawStars();
+
+
 </script>
-
-
 </body>
+
 </html>
