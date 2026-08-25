@@ -1701,9 +1701,15 @@ onclick="location.reload()"
 </div>
 <script>
 
-/* =====================================================
+/* =========================================================
+   NUESTRO UNIVERSO
+   NIVEL 2 — RUNNER
+   ========================================================= */
+
+
+/* =========================================================
    NAVEGACIÓN
-===================================================== */
+========================================================= */
 
 const screens = [
     "start",
@@ -1740,22 +1746,26 @@ function go(id){
     window.scrollTo(0,0);
 
     if(id === "s2"){
+
         setTimeout(function(){
             startLevel();
-        },100);
+        },150);
+
     }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    RECUERDOS
-===================================================== */
+========================================================= */
 
 function memory(title,text){
 
     const box =
         document.getElementById("memory");
+
+    if(!box) return;
 
     box.innerHTML =
         "<p><b>"
@@ -1763,130 +1773,16 @@ function memory(title,text){
         + "</b><br>"
         + text
         + "</p>";
-}
-
-
-/* =====================================================
-   FONDO ESPACIAL
-===================================================== */
-
-const canvas =
-    document.getElementById("space");
-
-const ctx =
-    canvas.getContext("2d");
-
-let starsBackground = [];
-
-function resizeCanvas(){
-
-    const dpr =
-        window.devicePixelRatio || 1;
-
-    canvas.width =
-        window.innerWidth * dpr;
-
-    canvas.height =
-        window.innerHeight * dpr;
-
-    ctx.setTransform(
-        dpr,
-        0,
-        0,
-        dpr,
-        0,
-        0
-    );
-
-    starsBackground = [];
-
-    const amount =
-        Math.min(
-            180,
-            Math.floor(
-                window.innerWidth / 6
-            )
-        );
-
-    for(let i=0;i<amount;i++){
-
-        starsBackground.push({
-
-            x:
-                Math.random()
-                * window.innerWidth,
-
-            y:
-                Math.random()
-                * window.innerHeight,
-
-            r:
-                Math.random()
-                * 1.4 + .2,
-
-            alpha:
-                Math.random()
-                * .7 + .2
-
-        });
-
-    }
 
 }
 
-function drawBackground(){
 
-    ctx.clearRect(
-        0,
-        0,
-        window.innerWidth,
-        window.innerHeight
-    );
+/* =========================================================
+   ELEMENTOS DEL NIVEL
+========================================================= */
 
-    for(const star of starsBackground){
-
-        ctx.globalAlpha =
-            star.alpha;
-
-        ctx.fillStyle =
-            "#ffffff";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            star.x,
-            star.y,
-            star.r,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-    }
-
-    ctx.globalAlpha=1;
-
-    requestAnimationFrame(
-        drawBackground
-    );
-}
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
-);
-
-resizeCanvas();
-drawBackground();
-
-
-/* =====================================================
-   NIVEL 2
-===================================================== */
-
-const gameArea =
-    document.getElementById("gameArea");
+const runner =
+    document.getElementById("runner");
 
 const world =
     document.getElementById("world");
@@ -1900,273 +1796,286 @@ const scoreElement =
 const scoreBar =
     document.getElementById("scorebar");
 
-const starPop =
-    document.getElementById("starPop");
+const starMessage =
+    document.getElementById("starMessage");
 
-const complete =
-    document.getElementById("complete");
+const levelComplete =
+    document.getElementById("levelComplete");
 
 const jumpButton =
     document.getElementById("jumpButton");
 
-const gameGrid =
-    document.getElementById("gameGrid");
+
+/* =========================================================
+   CONFIGURACIÓN
+
+   3000 px de recorrido.
+
+   A ~80 px/s son unos 37 segundos.
+   Perfecto para un nivel corto.
+========================================================= */
+
+const LEVEL_END = 3000;
+
+const WORLD_WIDTH = 3400;
+
+const BASE_SPEED = 82;
+
+const JUMP_POWER = 720;
+
+const GRAVITY = 1900;
 
 
-/*
-    El recorrido completo.
+/* =========================================================
+   12 ESTRELLAS
 
-    Es bastante más largo que la pantalla.
-*/
+   No son enero-diciembre.
 
-const LEVEL_LENGTH = 3500;
+   Son los 12 momentos de nuestro primer año:
+   25/08/2025 → 25/08/2026.
+========================================================= */
 
-
-/*
-    Posiciones de las 12 estrellas.
-
-    NO representan enero-diciembre.
-
-    Representan los 12 meses que fueron
-    pasando desde el 25/08/2025.
-*/
-
-const starData = [
+const starsData = [
 
     {
-        x:300,
-        y:125,
-        text:"25 AGO 2025"
+        x:250,
+        height:72,
+        name:"25 AGO 2025"
     },
 
     {
-        x:530,
-        y:190,
-        text:"1 MES"
+        x:470,
+        height:115,
+        name:"1 MES"
     },
 
     {
-        x:760,
-        y:120,
-        text:"2 MESES"
+        x:700,
+        height:70,
+        name:"2 MESES"
     },
 
     {
-        x:990,
-        y:210,
-        text:"3 MESES"
+        x:920,
+        height:125,
+        name:"3 MESES"
     },
 
     {
-        x:1230,
-        y:140,
-        text:"4 MESES"
+        x:1150,
+        height:78,
+        name:"4 MESES"
     },
 
     {
-        x:1460,
-        y:205,
-        text:"5 MESES"
+        x:1380,
+        height:120,
+        name:"5 MESES"
     },
 
     {
-        x:1700,
-        y:125,
-        text:"6 MESES"
+        x:1610,
+        height:75,
+        name:"6 MESES"
     },
 
     {
-        x:1940,
-        y:210,
-        text:"7 MESES"
+        x:1840,
+        height:125,
+        name:"7 MESES"
     },
 
     {
-        x:2180,
-        y:145,
-        text:"8 MESES"
+        x:2070,
+        height:78,
+        name:"8 MESES"
     },
 
     {
-        x:2420,
-        y:205,
-        text:"9 MESES"
+        x:2300,
+        height:120,
+        name:"9 MESES"
     },
 
     {
-        x:2700,
-        y:130,
-        text:"10 MESES"
+        x:2550,
+        height:75,
+        name:"10 MESES"
     },
 
     {
-        x:3050,
-        y:210,
-        text:"25 AGO 2026"
+        x:2790,
+        height:120,
+        name:"25 AGO 2026"
     }
 
 ];
 
 
-/* =====================================================
+/* =========================================================
+   OBSTÁCULOS
+
+   Pocos y fáciles.
+
+   La idea es que se sienta como un pequeño
+   juego romántico, no como un nivel difícil.
+========================================================= */
+
+const obstaclesData = [
+
+    {
+        x:380,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:620,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:850,
+        type:"block",
+        width:48,
+        height:50
+    },
+
+    {
+        x:1060,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:1280,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:1500,
+        type:"block",
+        width:48,
+        height:55
+    },
+
+    {
+        x:1730,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:1950,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:2180,
+        type:"block",
+        width:48,
+        height:52
+    },
+
+    {
+        x:2410,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:2640,
+        type:"spike",
+        width:44,
+        height:44
+    },
+
+    {
+        x:2890,
+        type:"spike",
+        width:44,
+        height:44
+    }
+
+];
+
+
+/* =========================================================
    CREAR ESTRELLAS
-===================================================== */
+========================================================= */
 
 function createStars(){
 
-    for(const data of starData){
+    /*
+       Elimina estrellas anteriores por si
+       el nivel se vuelve a iniciar.
+    */
+
+    world
+        .querySelectorAll(".star")
+        .forEach(function(element){
+            element.remove();
+        });
+
+
+    starsData.forEach(function(data){
 
         const star =
             document.createElement("div");
 
-        star.className="star";
+        star.className = "star";
 
-        star.textContent="⭐";
+        star.textContent = "⭐";
 
         star.style.left =
             data.x + "px";
 
         star.style.bottom =
-            "calc(14% + "
-            + data.y
-            + "px)";
+            data.height + "px";
 
         star.dataset.x =
             data.x;
 
-        star.dataset.y =
-            data.y;
+        star.dataset.height =
+            data.height;
 
-        star.dataset.text =
-            data.text;
+        star.dataset.name =
+            data.name;
 
         star.dataset.collected =
             "false";
 
         world.appendChild(star);
 
-    }
+    });
 
 }
 
 
-/* =====================================================
-   OBSTÁCULOS
-===================================================== */
-
-const obstacleData = [
-
-    {
-        x:420,
-        type:"spike"
-    },
-
-    {
-        x:620,
-        type:"spike"
-    },
-
-    {
-        x:830,
-        type:"block",
-        height:65
-    },
-
-    {
-        x:1080,
-        type:"spike2"
-    },
-
-    {
-        x:1180,
-        type:"spike"
-    },
-
-    {
-        x:1360,
-        type:"block",
-        height:75
-    },
-
-    {
-        x:1510,
-        type:"spike"
-    },
-
-    {
-        x:1580,
-        type:"spike"
-    },
-
-    {
-        x:1800,
-        type:"spike2"
-    },
-
-    {
-        x:1990,
-        type:"block",
-        height:70
-    },
-
-    {
-        x:2130,
-        type:"spike"
-    },
-
-    {
-        x:2200,
-        type:"spike"
-    },
-
-    {
-        x:2350,
-        type:"spike2"
-    },
-
-    {
-        x:2540,
-        type:"block",
-        height:80
-    },
-
-    {
-        x:2670,
-        type:"spike"
-    },
-
-    {
-        x:2740,
-        type:"spike"
-    },
-
-    {
-        x:2910,
-        type:"spike2"
-    },
-
-    {
-        x:3160,
-        type:"block",
-        height:75
-    },
-
-    {
-        x:3290,
-        type:"spike"
-    },
-
-    {
-        x:3360,
-        type:"spike"
-    }
-
-];
-
+/* =========================================================
+   CREAR OBSTÁCULOS
+========================================================= */
 
 function createObstacles(){
 
-    for(const data of obstacleData){
+    world
+        .querySelectorAll(".obstacle")
+        .forEach(function(element){
+            element.remove();
+        });
+
+
+    obstaclesData.forEach(function(data){
 
         const obstacle =
             document.createElement("div");
@@ -2178,134 +2087,141 @@ function createObstacles(){
         obstacle.style.left =
             data.x + "px";
 
-        obstacle.dataset.x =
-            data.x;
-
-        obstacle.dataset.type =
-            data.type;
-
-        if(data.height){
+        if(data.type === "block"){
 
             obstacle.style.height =
                 data.height + "px";
 
         }
 
-        world.appendChild(
-            obstacle
-        );
+        obstacle.dataset.x =
+            data.x;
 
-    }
+        obstacle.dataset.width =
+            data.width;
+
+        obstacle.dataset.height =
+            data.height;
+
+        obstacle.dataset.type =
+            data.type;
+
+        world.appendChild(obstacle);
+
+    });
 
 }
 
 
-/* =====================================================
-   ESTADO DEL JUEGO
-===================================================== */
+/* =========================================================
+   ESTADO
+========================================================= */
 
 let running = false;
 
-let animationFrame = 0;
+let animationFrame = null;
 
 let lastTime = 0;
 
-let playerX = 150;
+let playerX = 130;
 
 let playerY = 0;
 
 let velocityY = 0;
 
+let jumping = false;
+
 let cameraX = 0;
 
 let score = 0;
 
-let jumping = false;
-
-let hitLock = false;
+let collisionCooldown = false;
 
 
-/*
-    Física tipo Geometry Dash.
-*/
-
-const gravity = 2050;
-
-const jumpForce = 760;
-
-const speed = 255;
-
-
-/* =====================================================
-   CREAR NIVEL
-===================================================== */
-
-createStars();
-createObstacles();
-
-
-/* =====================================================
-   INICIAR NIVEL
-===================================================== */
+/* =========================================================
+   INICIAR
+========================================================= */
 
 function startLevel(){
 
-    cancelAnimationFrame(
-        animationFrame
-    );
+    /*
+       Detener cualquier partida anterior.
+    */
 
-    running=true;
+    if(animationFrame){
+        cancelAnimationFrame(
+            animationFrame
+        );
+    }
 
-    playerX=150;
 
-    playerY=0;
+    running = true;
 
-    velocityY=0;
+    playerX = 130;
 
-    cameraX=0;
+    playerY = 0;
 
-    score=0;
+    velocityY = 0;
 
-    jumping=false;
+    jumping = false;
 
-    hitLock=false;
+    cameraX = 0;
 
-    scoreElement.textContent="0";
+    score = 0;
 
-    scoreBar.style.width="0%";
+    collisionCooldown = false;
 
-    complete.classList.remove(
-        "show"
-    );
 
-    document
-        .querySelectorAll(".star")
-        .forEach(function(star){
+    scoreElement.textContent =
+        "0";
 
-            star.dataset.collected =
-                "false";
+    scoreBar.style.width =
+        "0%";
 
-            star.classList.remove(
-                "collected"
-            );
 
-        });
+    if(levelComplete){
+
+        levelComplete.classList.remove(
+            "show"
+        );
+
+    }
+
+
+    /*
+       Recrear las estrellas.
+    */
+
+    createStars();
+
+    createObstacles();
+
+
+    /*
+       IMPORTANTE:
+
+       El jugador ahora SÍ tiene
+       posición horizontal real.
+    */
+
+    player.style.left =
+        playerX + "px";
+
+    player.style.bottom =
+        "13%";
+
 
     player.style.transform =
         "rotate(0deg)";
 
-    updatePlayer();
 
     world.style.transform =
         "translateX(0px)";
 
-    gameGrid.style.setProperty(
-        "--grid",
-        "0px"
-    );
 
     lastTime =
         performance.now();
+
 
     animationFrame =
         requestAnimationFrame(
@@ -2315,9 +2231,9 @@ function startLevel(){
 }
 
 
-/* =====================================================
-   SALTO
-===================================================== */
+/* =========================================================
+   SALTAR
+========================================================= */
 
 function jump(){
 
@@ -2325,24 +2241,33 @@ function jump(){
         return;
     }
 
+
+    /*
+       Solo un salto a la vez.
+
+       Esto mantiene el juego fácil.
+    */
+
     if(jumping){
         return;
     }
 
-    velocityY =
-        jumpForce;
 
-    jumping=true;
+    velocityY =
+        JUMP_POWER;
+
+    jumping = true;
+
 
     player.style.transform =
-        "rotate(-15deg)";
+        "rotate(-12deg)";
 
 }
 
 
-/* =====================================================
-   CONTROLES PC
-===================================================== */
+/* =========================================================
+   TECLADO
+========================================================= */
 
 document.addEventListener(
     "keydown",
@@ -2354,9 +2279,11 @@ document.addEventListener(
                 .classList
                 .contains("active");
 
+
         if(!level2){
             return;
         }
+
 
         if(
             event.code === "Space" ||
@@ -2374,25 +2301,29 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   CONTROL CELULAR
-===================================================== */
+/* =========================================================
+   CELULAR
+========================================================= */
 
-jumpButton.addEventListener(
-    "pointerdown",
-    function(event){
+if(jumpButton){
 
-        event.preventDefault();
+    jumpButton.addEventListener(
+        "pointerdown",
+        function(event){
 
-        jump();
+            event.preventDefault();
 
-    }
-);
+            jump();
+
+        }
+    );
+
+}
 
 
-/* =====================================================
+/* =========================================================
    GAME LOOP
-===================================================== */
+========================================================= */
 
 function gameLoop(time){
 
@@ -2400,22 +2331,35 @@ function gameLoop(time){
         return;
     }
 
+
+    /*
+       Delta limitado para que el juego
+       no se rompa si el celular tarda
+       un frame.
+    */
+
     let delta =
         (time-lastTime)/1000;
 
-    if(delta>0.035){
-        delta=0.035;
-    }
 
-    lastTime=time;
+    delta =
+        Math.min(
+            delta,
+            0.035
+        );
 
 
-    /* -----------------------------
-       GRAVEDAD
-    ----------------------------- */
+    lastTime =
+        time;
+
+
+    /* =====================================================
+       FÍSICA
+    ===================================================== */
 
     velocityY -=
-        gravity * delta;
+        GRAVITY * delta;
+
 
     playerY +=
         velocityY * delta;
@@ -2425,13 +2369,14 @@ function gameLoop(time){
        Piso.
     */
 
-    if(playerY<=0){
+    if(playerY <= 0){
 
-        playerY=0;
+        playerY = 0;
 
-        velocityY=0;
+        velocityY = 0;
 
-        jumping=false;
+        jumping = false;
+
 
         player.style.transform =
             "rotate(0deg)";
@@ -2439,87 +2384,129 @@ function gameLoop(time){
     }
 
 
-    /* -----------------------------
-       AVANCE
-    ----------------------------- */
+    /* =====================================================
+       AVANCE AUTOMÁTICO
+    ===================================================== */
 
     playerX +=
-        speed * delta;
+        BASE_SPEED * delta;
 
 
-    /* -----------------------------
-       CÁMARA
-    ----------------------------- */
+    /*
+       Limitar posición.
+    */
 
-    const viewport =
-        gameArea.clientWidth;
-
-    let targetCamera =
-        playerX - viewport * .28;
-
-    const maxCamera =
-        LEVEL_LENGTH -
-        viewport;
-
-    if(targetCamera<0){
-        targetCamera=0;
+    if(playerX > LEVEL_END){
+        playerX = LEVEL_END;
     }
 
-    if(targetCamera>maxCamera){
-        targetCamera=maxCamera;
-    }
 
-    cameraX +=
-        (targetCamera-cameraX)
-        * .14;
+    /* =====================================================
+       ACTUALIZAR POSICIÓN DEL PERSONAJE
+
+       ESTE ERA EL ERROR PRINCIPAL DEL
+       CÓDIGO ANTERIOR.
+    ===================================================== */
+
+    player.style.left =
+        playerX + "px";
 
 
-    world.style.transform =
-        "translateX("
-        + (-cameraX)
+    player.style.bottom =
+        "calc(13% + "
+        + playerY
         + "px)";
 
 
-    gameGrid.style.setProperty(
-        "--grid",
-        (-cameraX*.35)+"px"
-    );
+    /* =====================================================
+       CÁMARA
+
+       La cámara sigue al personaje,
+       pero nunca lo deja salir de pantalla.
+    ===================================================== */
+
+    const viewportWidth =
+        runner.clientWidth;
 
 
-    updatePlayer();
+    /*
+       El personaje estará aproximadamente
+       al 30% de la pantalla.
+    */
+
+    let targetCamera =
+        playerX -
+        viewportWidth * 0.30;
+
+
+    /*
+       Nunca ir antes del principio.
+    */
+
+    if(targetCamera < 0){
+        targetCamera = 0;
+    }
+
+
+    /*
+       Nunca pasar el final del mundo.
+    */
+
+    const maxCamera =
+        WORLD_WIDTH -
+        viewportWidth;
+
+
+    if(targetCamera > maxCamera){
+        targetCamera = maxCamera;
+    }
+
+
+    /*
+       Movimiento suave.
+    */
+
+    cameraX +=
+        (
+            targetCamera -
+            cameraX
+        ) * 0.12;
+
+
+    world.style.transform =
+        "translate3d("
+        + (-cameraX)
+        + "px,0,0)";
+
+
+    /* =====================================================
+       ESTRELLAS
+    ===================================================== */
 
     checkStars();
+
+
+    /* =====================================================
+       OBSTÁCULOS
+    ===================================================== */
 
     checkObstacles();
 
 
-    /* -----------------------------
-       LLEGADA
-    ----------------------------- */
+    /* =====================================================
+       FINAL
 
-    if(playerX>=LEVEL_LENGTH){
+       Debe tener las 12 estrellas
+       y llegar al personaje.
+    ===================================================== */
 
-        if(score===12){
+    if(playerX >= LEVEL_END){
+
+        if(score >= 12){
 
             finishLevel();
 
             return;
-
-        }else{
-
-            /*
-                Si llega al final sin las
-                12 estrellas, vuelve un poco.
-            */
-
-            playerX =
-                LEVEL_LENGTH - 220;
-
-            showPop(
-                "⭐ FALTAN "
-                + (12-score)
-                + " ESTRELLAS ⭐"
-            );
 
         }
 
@@ -2534,69 +2521,70 @@ function gameLoop(time){
 }
 
 
-/* =====================================================
-   ACTUALIZAR PERSONAJE
-===================================================== */
-
-function updatePlayer(){
-
-    player.style.bottom =
-        "calc(14% + "
-        + playerY
-        + "px)";
-
-}
-
-
-/* =====================================================
+/* =========================================================
    ESTRELLAS
-===================================================== */
+========================================================= */
 
 function checkStars(){
 
     const stars =
-        document.querySelectorAll(
+        world.querySelectorAll(
             ".star"
         );
+
 
     stars.forEach(function(star){
 
         if(
-            star.dataset.collected
-            === "true"
+            star.dataset.collected ===
+            "true"
         ){
             return;
         }
+
 
         const starX =
             Number(
                 star.dataset.x
             );
 
+
         const starY =
             Number(
-                star.dataset.y
-            );
-
-
-        const distanceX =
-            Math.abs(
-                playerX-starX
-            );
-
-        const distanceY =
-            Math.abs(
-                playerY-starY
+                star.dataset.height
             );
 
 
         /*
-            Área de recolección.
+           Distancia horizontal.
         */
 
+        const horizontal =
+            Math.abs(
+                playerX -
+                starX
+            );
+
+
+        /*
+           Distancia vertical.
+
+           35 px de tolerancia para que
+           recogerlas sea fácil.
+        */
+
+        const vertical =
+            Math.abs(
+                (
+                    playerY + 20
+                ) -
+                starY
+            );
+
+
         if(
-            distanceX<48 &&
-            distanceY<55
+            horizontal < 55 &&
+            vertical < 55
         ){
 
             collectStar(star);
@@ -2608,151 +2596,188 @@ function checkStars(){
 }
 
 
-/* =====================================================
+/* =========================================================
    RECOGER ESTRELLA
-===================================================== */
+========================================================= */
 
 function collectStar(star){
 
     if(
-        star.dataset.collected
-        === "true"
+        star.dataset.collected ===
+        "true"
     ){
         return;
     }
 
+
     star.dataset.collected =
         "true";
+
 
     score++;
 
 
-    /* Contador */
+    /*
+       Contador.
+    */
 
     scoreElement.textContent =
         score;
 
 
-    /* Barra */
+    /*
+       Barra.
+    */
 
     scoreBar.style.width =
-        ((score/12)*100)
-        + "%";
+        (
+            score / 12 * 100
+        ) + "%";
 
 
-    /* Animación */
+    /*
+       Animación.
+    */
 
     star.classList.add(
         "collected"
     );
 
 
-    /* Texto */
-
-    showPop(
-        "⭐ "
-        + star.dataset.text
-        + " ⭐"
-    );
-
-
-    /* Partículas */
-
-    createParticles(
-        star
-    );
-
-}
-
-
-/* =====================================================
-   MENSAJE
-===================================================== */
-
-function showPop(text){
-
-    starPop.textContent =
-        text;
-
-    starPop.classList.remove(
-        "show"
-    );
-
     /*
-       Fuerza a reiniciar la animación.
+       Mensaje.
     */
 
-    void starPop.offsetWidth;
+    if(starMessage){
 
-    starPop.classList.add(
-        "show"
-    );
+        starMessage.textContent =
+            "⭐ "
+            + star.dataset.name
+            + " ⭐";
+
+
+        starMessage.classList.remove(
+            "show"
+        );
+
+
+        void starMessage.offsetWidth;
+
+
+        starMessage.classList.add(
+            "show"
+        );
+
+    }
+
+
+    /*
+       Partículas.
+    */
+
+    createParticles(star);
+
+
+    /*
+       Si conseguimos las 12.
+    */
+
+    if(score === 12){
+
+        setTimeout(
+            function(){
+
+                if(starMessage){
+
+                    starMessage.textContent =
+                        "💜 12 ESTRELLAS 💜";
+
+                    starMessage.classList.remove(
+                        "show"
+                    );
+
+                    void starMessage.offsetWidth;
+
+                    starMessage.classList.add(
+                        "show"
+                    );
+
+                }
+
+            },
+            250
+        );
+
+    }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    PARTÍCULAS
-===================================================== */
+========================================================= */
 
 function createParticles(star){
 
-    const x =
+    const starX =
         Number(
             star.dataset.x
         );
 
-    const y =
+
+    const starY =
         Number(
-            star.dataset.y
+            star.dataset.height
         );
 
-    const gameRect =
-        gameArea.getBoundingClientRect();
 
-
-    for(let i=0;i<22;i++){
+    for(let i=0;i<18;i++){
 
         const particle =
             document.createElement(
                 "div"
             );
 
+
         particle.className =
             "particle";
 
+
         /*
-            Posición relativa al área
-            visible del juego.
+           Posición relativa al runner.
+
+           Restamos la cámara porque el mundo
+           se está desplazando.
         */
 
         particle.style.left =
             (
-                x -
+                starX -
                 cameraX +
                 15
             ) + "px";
 
+
         particle.style.bottom =
             (
-                14 +
-                y +
-                10
+                starY +
+                15
             ) + "px";
 
 
         particle.style.setProperty(
-            "--x",
+            "--rx",
             Math.random()
         );
+
 
         particle.style.setProperty(
-            "--y",
+            "--ry",
             Math.random()
         );
 
 
-        gameArea.appendChild(
+        runner.appendChild(
             particle
         );
 
@@ -2761,7 +2786,7 @@ function createParticles(star){
             function(){
                 particle.remove();
             },
-            750
+            700
         );
 
     }
@@ -2769,75 +2794,69 @@ function createParticles(star){
 }
 
 
-/* =====================================================
+/* =========================================================
    OBSTÁCULOS
-===================================================== */
+========================================================= */
 
 function checkObstacles(){
 
-    if(hitLock){
+    if(collisionCooldown){
         return;
     }
 
 
     const obstacles =
-        document.querySelectorAll(
+        world.querySelectorAll(
             ".obstacle"
         );
 
 
-    for(const obstacle of obstacles){
+    for(
+        const obstacle
+        of obstacles
+    ){
 
-        const x =
+        const obstacleX =
             Number(
                 obstacle.dataset.x
             );
 
-        const type =
-            obstacle.dataset.type;
+
+        const width =
+            Number(
+                obstacle.dataset.width
+            );
 
 
-        let width=44;
-
-        let height=46;
-
-
-        if(type==="block"){
-
-            width=52;
-
-            height =
-                obstacle.offsetHeight;
-
-        }
-
-
-        if(type==="spike2"){
-
-            width=60;
-
-            height=46;
-
-        }
+        const height =
+            Number(
+                obstacle.dataset.height
+            );
 
 
         /*
-            Caja horizontal.
+           Caja horizontal.
+
+           Un poquito de margen para
+           hacerlo más fácil.
         */
 
         const horizontal =
-            playerX + 38 > x &&
-            playerX < x + width;
+            playerX + 34 >
+                obstacleX + 7
+            &&
+            playerX + 8 <
+                obstacleX + width - 5;
 
 
         /*
-            Si el personaje está
-            suficientemente arriba,
-            pasa el obstáculo.
+           Si el personaje está en el aire
+           por encima del obstáculo,
+           no choca.
         */
 
         const vertical =
-            playerY < height - 7;
+            playerY < height - 5;
 
 
         if(
@@ -2847,7 +2866,7 @@ function checkObstacles(){
 
             hitObstacle();
 
-            break;
+            return;
 
         }
 
@@ -2856,140 +2875,187 @@ function checkObstacles(){
 }
 
 
-/* =====================================================
+/* =========================================================
    GOLPE
-===================================================== */
+
+   No reinicia el nivel.
+
+   Simplemente retrocede un poquito.
+========================================================= */
 
 function hitObstacle(){
 
-    if(hitLock){
+    if(collisionCooldown){
         return;
     }
 
-    hitLock=true;
 
-    running=false;
-
-
-    player.style.transform =
-        "rotate(35deg) scale(.85)";
-
-
-    gameArea.style.boxShadow =
-        "inset 0 0 130px #ff4f8b55";
+    collisionCooldown = true;
 
 
     /*
-       Retrocede.
-
-       Las estrellas que ya consiguió
-       NO se pierden.
+       Pequeña animación.
     */
+
+    player.style.transform =
+        "rotate(20deg) scale(.9)";
+
+
+    if(runner){
+
+        runner.style.boxShadow =
+            "inset 0 0 100px #ff6aa844";
+
+    }
+
+
+    /*
+       Retroceder solo 100 px.
+
+       Las estrellas permanecen.
+    */
+
+    playerX =
+        Math.max(
+            130,
+            playerX - 100
+        );
+
+
+    playerY = 0;
+
+    velocityY = 0;
+
+    jumping = false;
+
 
     setTimeout(
         function(){
 
-            playerX =
-                Math.max(
-                    150,
-                    playerX-260
-                );
-
-            playerY=0;
-
-            velocityY=0;
-
-            jumping=false;
-
             player.style.transform =
                 "rotate(0deg)";
 
-            gameArea.style.boxShadow =
-                "";
 
-            hitLock=false;
+            if(runner){
 
-            running=true;
+                runner.style.boxShadow =
+                    "";
 
-            lastTime =
-                performance.now();
+            }
 
-            animationFrame =
-                requestAnimationFrame(
-                    gameLoop
-                );
+
+            collisionCooldown =
+                false;
 
         },
-        650
+        350
     );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    FINAL DEL NIVEL
-===================================================== */
+========================================================= */
 
 function finishLevel(){
 
-    running=false;
-
-    cancelAnimationFrame(
-        animationFrame
-    );
+    running = false;
 
 
-    /*
-       Mostrar al personaje
-       junto al otro.
-    */
+    if(animationFrame){
 
-    cameraX =
-        LEVEL_LENGTH -
-        gameArea.clientWidth +
-        40;
+        cancelAnimationFrame(
+            animationFrame
+        );
 
-
-    if(cameraX<0){
-        cameraX=0;
     }
 
 
-    world.style.transform =
-        "translateX("
-        + (-cameraX)
-        + "px)";
+    /*
+       Colocar exactamente al final.
+    */
+
+    playerX =
+        LEVEL_END;
 
 
-    gameGrid.style.setProperty(
-        "--grid",
-        (-cameraX*.35)+"px"
-    );
+    player.style.left =
+        playerX + "px";
 
 
     /*
-       Pequeña pausa dramática.
+       Cámara final.
+
+       Aquí usamos el tamaño REAL del runner.
+    */
+
+    const viewportWidth =
+        runner.clientWidth;
+
+
+    let finalCamera =
+        LEVEL_END -
+        viewportWidth * 0.55;
+
+
+    const maxCamera =
+        WORLD_WIDTH -
+        viewportWidth;
+
+
+    finalCamera =
+        Math.max(
+            0,
+            Math.min(
+                finalCamera,
+                maxCamera
+            )
+        );
+
+
+    cameraX =
+        finalCamera;
+
+
+    world.style.transform =
+        "translate3d("
+        + (-cameraX)
+        + "px,0,0)";
+
+
+    /*
+       Pausa para que se vea que
+       llegamos hasta el otro personaje.
     */
 
     setTimeout(
         function(){
 
-            complete.classList.add(
-                "show"
-            );
+            if(levelComplete){
+
+                levelComplete.classList.add(
+                    "show"
+                );
+
+            }
 
 
             /*
-               Después de mostrar
-               el mensaje, continúa.
+               Después continúa.
             */
 
             setTimeout(
                 function(){
 
-                    complete.classList.remove(
-                        "show"
-                    );
+                    if(levelComplete){
+
+                        levelComplete.classList.remove(
+                            "show"
+                        );
+
+                    }
+
 
                     go("s3");
 
@@ -3004,30 +3070,141 @@ function finishLevel(){
 }
 
 
-/* =====================================================
-   PREVENIR SCROLL CON ESPACIO
-===================================================== */
+/* =========================================================
+   FONDO DE ESTRELLAS
+========================================================= */
 
-window.addEventListener(
-    "keydown",
-    function(event){
+const canvas =
+    document.getElementById("space");
 
-        if(
-            event.code==="Space" &&
-            document
-                .getElementById("s2")
-                .classList
-                .contains("active")
-        ){
+const ctx =
+    canvas.getContext("2d");
 
-            event.preventDefault();
 
-        }
+let backgroundStars = [];
+
+
+function resizeCanvas(){
+
+    const dpr =
+        window.devicePixelRatio || 1;
+
+
+    canvas.width =
+        window.innerWidth * dpr;
+
+
+    canvas.height =
+        window.innerHeight * dpr;
+
+
+    ctx.setTransform(
+        dpr,
+        0,
+        0,
+        dpr,
+        0,
+        0
+    );
+
+
+    backgroundStars = [];
+
+
+    const amount =
+        Math.min(
+            180,
+            Math.floor(
+                window.innerWidth / 6
+            )
+        );
+
+
+    for(let i=0;i<amount;i++){
+
+        backgroundStars.push({
+
+            x:
+                Math.random()
+                * window.innerWidth,
+
+            y:
+                Math.random()
+                * window.innerHeight,
+
+            r:
+                Math.random()
+                * 1.4
+                + .2,
+
+            a:
+                Math.random()
+                * .7
+                + .2
+
+        });
 
     }
+
+}
+
+
+function drawBackground(){
+
+    ctx.clearRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+    );
+
+
+    backgroundStars.forEach(
+        function(star){
+
+            ctx.globalAlpha =
+                star.a;
+
+            ctx.fillStyle =
+                "#ffffff";
+
+            ctx.beginPath();
+
+            ctx.arc(
+                star.x,
+                star.y,
+                star.r,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.globalAlpha = 1;
+
+
+    requestAnimationFrame(
+        drawBackground
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
 );
 
-</script>
 
+resizeCanvas();
+
+drawBackground();
+
+
+</script>
 </body>
 </html>
