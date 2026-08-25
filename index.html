@@ -2965,70 +2965,44 @@ function move(dx,dy){
    COLISIÓN CON LUNAS
 ========================================= */
 
-function checkMoonCollisions(){
+function checkObstacleCollision() {
+    const playerRect = player.getBoundingClientRect();
+    const obstacles = document.querySelectorAll('.obstacle');
 
-    moons.forEach(
-        function(moon){
+    for (const obstacle of obstacles) {
 
-            if(
-                moon.dataset.got ===
-                'true'
-            ){
+        if (obstacle.dataset.hit === "true") continue;
 
-                return;
+        const obstacleRect = obstacle.getBoundingClientRect();
 
-            }
+        // Zona de colisión reducida para que no pierdas antes de tocar
+        const playerBox = {
+            left: playerRect.left + playerRect.width * 0.28,
+            right: playerRect.right - playerRect.width * 0.28,
+            top: playerRect.top + playerRect.height * 0.22,
+            bottom: playerRect.bottom - playerRect.height * 0.18
+        };
 
+        const obstacleBox = {
+            left: obstacleRect.left + obstacleRect.width * 0.18,
+            right: obstacleRect.right - obstacleRect.width * 0.18,
+            top: obstacleRect.top + obstacleRect.height * 0.18,
+            bottom: obstacleRect.bottom - obstacleRect.height * 0.18
+        };
 
-            const moonX =
-                parseFloat(
-                    moon.style.left
-                );
+        const collision =
+            playerBox.right > obstacleBox.left &&
+            playerBox.left < obstacleBox.right &&
+            playerBox.bottom > obstacleBox.top &&
+            playerBox.top < obstacleBox.bottom;
 
-
-            const moonY =
-                parseFloat(
-                    moon.style.top
-                );
-
-
-            const distance =
-                Math.sqrt(
-
-                    Math.pow(
-                        px - moonX,
-                        2
-                    )
-
-                    +
-
-                    Math.pow(
-                        py - moonY,
-                        2
-                    )
-
-                );
-
-
-            /*
-               Radio generoso.
-
-               No hace falta ser exacto.
-            */
-
-            if(
-                distance < 7
-            ){
-
-                collectMoon(moon);
-
-            }
-
+        if (collision) {
+            obstacle.dataset.hit = "true";
+            loseLevel();
+            return;
         }
-    );
-
+    }
 }
-
 
 /* =========================================
    RECOGER LUNA
